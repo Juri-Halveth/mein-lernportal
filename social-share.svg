@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Mein Lernportal</title><desc id="desc">Öffnen. Suchen. Lernen. 702 freie Lektionen.</desc>
+  <defs><radialGradient id="g" cx="72%" cy="28%" r="78%"><stop stop-color="#66358b"/><stop offset=".48" stop-color="#17162f"/><stop offset="1" stop-color="#070914"/></radialGradient><linearGradient id="a" x1="0" x2="1"><stop stop-color="#ffd166"/><stop offset="1" stop-color="#ff5fa2"/></linearGradient></defs>
+  <rect width="1200" height="630" rx="40" fill="url(#g)"/><g fill="#fff" opacity=".55"><circle cx="80" cy="75" r="2"/><circle cx="180" cy="155" r="1.5"/><circle cx="1060" cy="92" r="2"/><circle cx="985" cy="510" r="1.5"/><circle cx="735" cy="85" r="1.5"/><circle cx="630" cy="555" r="2"/></g>
+  <circle cx="960" cy="285" r="145" fill="none" stroke="#ffd166" stroke-opacity=".5" stroke-width="2"/><ellipse cx="960" cy="285" rx="215" ry="72" fill="none" stroke="#75def5" stroke-opacity=".4" stroke-width="2" transform="rotate(-18 960 285)"/><circle cx="960" cy="285" r="76" fill="#ffd166" fill-opacity=".13"/><text x="960" y="314" text-anchor="middle" fill="#ffd166" font-size="88" font-family="Segoe UI Symbol, sans-serif">✳</text>
+  <text x="85" y="105" fill="#ffd166" font-size="23" font-weight="700" letter-spacing="5" font-family="Segoe UI, sans-serif">MEIN LERNPORTAL</text>
+  <text x="80" y="245" fill="#fff" font-size="86" font-weight="800" font-family="Segoe UI, sans-serif">Öffnen.</text><text x="80" y="340" fill="#fff" font-size="86" font-weight="800" font-family="Segoe UI, sans-serif">Suchen.</text><text x="80" y="435" fill="url(#a)" font-size="86" font-weight="800" font-family="Segoe UI, sans-serif">Lernen.</text>
+  <text x="85" y="525" fill="#d6d9e8" font-size="28" font-family="Segoe UI, sans-serif">702 freie Lektionen · ohne Konto · ohne Werbung</text>
+</svg>

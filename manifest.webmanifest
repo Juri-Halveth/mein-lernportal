@@ -1,0 +1,14 @@
+{
+  "name": "Mein Lernportal",
+  "short_name": "Lernportal",
+  "description": "702 freie Lektionen ohne Konto, Paywall oder Werbung.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#090b17",
+  "theme_color": "#090b17",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://juri-halveth.github.io/mein-lernportal/sitemap.xml

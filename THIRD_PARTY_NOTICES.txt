@@ -1,0 +1,16 @@
+Mein Lernportal - third-party and separate-license notices
+Release baseline: 2026-09-16
+
+Original platform sources and original published lesson content: ISC;
+see LICENSE.txt. Emoji are rendered by the visitor's operating system;
+no third-party emoji artwork is bundled.
+
+Python runtime:
+Pyodide 0.26.2 is loaded on demand from jsDelivr, not bundled in this release.
+Pyodide uses MPL-2.0; its Python/WebAssembly distribution includes additional
+components with their own licenses. Sources and distribution notices:
+https://github.com/pyodide/pyodide/tree/0.26.2
+https://pyodide.org/en/0.26.2/
+
+Development tools are installed from package-lock.json and retain the licenses
+in their package distributions. They are not shipped into the browser.

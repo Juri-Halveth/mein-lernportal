@@ -1,0 +1,14 @@
+{
+  "name": "mein-lernportal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "702 freie Lektionen ohne Konto, Paywall oder Werbung",
+  "scripts": {
+    "serve": "node tools/serve.cjs",
+    "test": "node tests/portal.test.cjs"
+  },
+  "license": "ISC",
+  "devDependencies": {
+    "jsdom": "26.1.0"
+  }
+}

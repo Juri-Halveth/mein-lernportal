@@ -34,7 +34,7 @@ Die Prüfung bindet den Inhaltssnapshot, zählt Tracks, Stufen und eindeutige Le
 
 ## Herkunft
 
-Die Plattform wurde aus dem geprüften, kontofreien Lernstudio-Stand `8f171e7` aufgebaut und mit dem Curriculum-Snapshot `50775f64d82c0dd77ec2db4a9e0f6a3ab8714ff8cb55eba429fb7d9fa8c14f04` erweitert. Dadurch bleibt der neue öffentliche Stand vom weiterhin accountgebundenen Hosting unter `mein-lernstudio.com` getrennt.
+Die Plattform wurde aus dem geprüften, kontofreien Lernstudio-Stand `8f171e7` aufgebaut. Der kanonische LF-Snapshot des veröffentlichten Curriculums ist mit SHA-256 `8c40f2071c6a2d67f91c6e759fe2c36de4877321e61001b51020376ffc693432` gebunden. Dadurch bleibt der neue öffentliche Stand vom weiterhin accountgebundenen Hosting unter `mein-lernstudio.com` getrennt.
 
 ## Lizenz
 

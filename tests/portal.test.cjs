@@ -8,8 +8,6 @@ const { JSDOM, ResourceLoader, VirtualConsole } = require("jsdom");
 
 const root = path.resolve(__dirname, "..");
 const read = name => fs.readFileSync(path.join(root, name), "utf8");
-const bytes = name => fs.readFileSync(path.join(root, name));
-
 function loadClassic(files) {
   const context = { window: {}, console, structuredClone, crypto: globalThis.crypto };
   vm.createContext(context);
@@ -28,7 +26,8 @@ function contentContract() {
   assert.equal(lessons.length, 702, "expected 702 lessons");
   assert.equal(new Set(ids).size, 702, "every lesson id must be unique");
   assert(ids.includes("ki-2-4"), "direct-link reference lesson is missing");
-  assert.equal(crypto.createHash("sha256").update(bytes("curriculum.js")).digest("hex"), "50775f64d82c0dd77ec2db4a9e0f6a3ab8714ff8cb55eba429fb7d9fa8c14f04", "curriculum snapshot changed without updating its bound digest");
+  const canonicalCurriculum = read("curriculum.js").replace(/\r\n/g, "\n");
+  assert.equal(crypto.createHash("sha256").update(canonicalCurriculum, "utf8").digest("hex"), "8c40f2071c6a2d67f91c6e759fe2c36de4877321e61001b51020376ffc693432", "canonical curriculum snapshot changed without updating its bound digest");
 }
 
 function shellContract() {

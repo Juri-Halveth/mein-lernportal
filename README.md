@@ -1,5 +1,14 @@
 # Mein Lernportal
 
+<!-- HALVETH_WORK_CERTIFICATES_V1_1 -->
+## Juri Janovski / Juri Halveth – Privates HALVETH-Werkzertifikat
+
+[Privates HALVETH-Werkzertifikat: Dokumentiertes Lernportal, Inhaltsverträge und Pages-Deployment – Mein Lernportal](https://juri-halveth.github.io/werkzertifikate/#werk-mein-lernportal).
+
+HALVETH VERACHEL STUDIOS · Quellstand, dokumentierte Ergebnisse und SHA-256-Belege stehen im Werkzertifikat. Private, mit Codex erstellte Werkdokumentation; keine ISTQB- oder sonstige Personenzertifizierung.
+<!-- /HALVETH_WORK_CERTIFICATES_V1_1 -->
+
+
 **Öffnen. Suchen. Lernen.**
 
 [Mein Lernportal](https://juri-halveth.github.io/mein-lernportal/) ist ein statisches, frei zugängliches Lernuniversum mit 702 Lektionen in 13 Themenwelten. Die Startseite öffnet direkt den Katalog. Es gibt keine Anmeldung, Paywall, Werbung oder eingebautes Tracking.

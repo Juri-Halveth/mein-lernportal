@@ -28,3 +28,7 @@ ATH_EINFACH_ERKLAERT.pptx ist die für dieses Projekt erstellte Erklärung mit e
 ## Darstellung und Betrieb
 
 Die Seite enthält eine Browserrechnung mit Beispielguthaben. Sie hat keine Wallet-Verbindung, keine Zahlungsfunktion, keinen Preisfeed, kein Tracking und keinen Zugriff auf private Schlüssel. Die Erläuterung ist keine zugesagte Einlösbarkeit, kein Eigentumsanteil und kein individueller Zahlungsanspruch. Keine Drittbilder, externen Fonts oder Illustrationen werden eingebunden.
+
+## Bash-Experiment
+ATH_BASH_EXPERIMENT.sh ist ein eigenständiges neues Bash-Lernexperiment unter ISC. Ein Prozess, zwei Testschlüssel, feste Beispielmenge. Buchungen, Replay und Hashverkettung werden von Bash orchestriert; OpenSSL übernimmt RSA und sha256sum die Hashfunktion. Dieses Skript ist kein vollständiger V0.5-Port. BUILD_ATH_WEBSITE.sh erzeugt die Textdateien der Website aus Bash-Heredocs. Browser-HTML/CSS/JavaScript bleiben eigene Ausgabetypen.
+

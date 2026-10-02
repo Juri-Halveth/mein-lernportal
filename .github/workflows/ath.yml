@@ -2,9 +2,9 @@ name: ATH website checks
 on:
   push:
     branches: [main]
-    paths: ['ath/**', 'tests/ath.cjs', '.github/workflows/ath.yml']
+    paths: ['ath/**', 'tests/ath.cjs', 'tests/ath-bash.sh', '.github/workflows/ath.yml']
   pull_request:
-    paths: ['ath/**', 'tests/ath.cjs', '.github/workflows/ath.yml']
+    paths: ['ath/**', 'tests/ath.cjs', 'tests/ath-bash.sh', '.github/workflows/ath.yml']
   workflow_dispatch:
 permissions:
   contents: read
@@ -18,5 +18,7 @@ jobs:
           node-version: '22'
           cache: npm
       - run: npm ci
+      - run: bash tests/ath-bash.sh
       - run: node tests/ath.cjs
       - run: npm test
+

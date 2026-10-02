@@ -1,0 +1,719 @@
+{
+  "schema": "bash-big-bang.v1",
+  "version": "0.2.0",
+  "sourceCommit": "1e6e149107be689f3c3c62c22771c43dfaf925a7",
+  "curriculumSha256": "8c40f2071c6a2d67f91c6e759fe2c36de4877321e61001b51020376ffc693432",
+  "sourceLessonCount": 702,
+  "recipes": [
+    {
+      "id": "B001",
+      "title": "Ausgabe",
+      "concept": "printf",
+      "bash": "printf \"%s\\n\" \"Hallo\"",
+      "expected": "Hallo",
+      "explanation": "Text auf stdout ausgeben. printf bindet das Ausgabeformat.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B002",
+      "title": "Variable",
+      "concept": "assignment",
+      "bash": "name=\"Juri\"; printf \"%s\\n\" \"$name\"",
+      "expected": "Juri",
+      "explanation": "Eine Zeichenfolge an einen Namen binden und quotiert lesen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B003",
+      "title": "Leerer Wert",
+      "concept": "empty",
+      "bash": "x=\"\"; printf \"[%s]\\n\" \"$x\"",
+      "expected": "[]",
+      "explanation": "Ein leerer String ist ein vorhandener Wert.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B004",
+      "title": "Default",
+      "concept": "parameter",
+      "bash": "unset x; printf \"%s\\n\" \"${x:-Standard}\"",
+      "expected": "Standard",
+      "explanation": "Default bei unset oder leer; der Originalwert wird hier nicht gesetzt.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B005",
+      "title": "Länge",
+      "concept": "length",
+      "bash": "x=\"Bash\"; printf \"%s\\n\" \"${#x}\"",
+      "expected": "4",
+      "explanation": "Länge einer einfachen ASCII-Zeichenfolge. Unicode-Verhalten hängt an Locale.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B006",
+      "title": "Teilstring",
+      "concept": "substring",
+      "bash": "x=\"abcdef\"; printf \"%s\\n\" \"${x:2:3}\"",
+      "expected": "cde",
+      "explanation": "Ein Teilstück ab nullbasiertem Offset auswählen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B007",
+      "title": "Präfix entfernen",
+      "concept": "prefix",
+      "bash": "x=\"src/app.js\"; printf \"%s\\n\" \"${x#src/}\"",
+      "expected": "app.js",
+      "explanation": "Ein passendes Präfix aus einer Expansion entfernen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B008",
+      "title": "Suffix entfernen",
+      "concept": "suffix",
+      "bash": "x=\"lesson.txt\"; printf \"%s\\n\" \"${x%.txt}\"",
+      "expected": "lesson",
+      "explanation": "Ein passendes Suffix entfernen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B009",
+      "title": "Ersetzung",
+      "concept": "replace",
+      "bash": "x=\"rot blau rot\"; printf \"%s\\n\" \"${x//rot/gruen}\"",
+      "expected": "gruen blau gruen",
+      "explanation": "Alle passenden Teilmuster in der Expansion ersetzen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B010",
+      "title": "Großschreibung",
+      "concept": "uppercase",
+      "bash": "x=\"bash\"; printf \"%s\\n\" \"${x^^}\"",
+      "expected": "BASH",
+      "explanation": "Bash-spezifische Parameterexpansion, ASCII-Beispiel.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B011",
+      "title": "Kleinschreibung",
+      "concept": "lowercase",
+      "bash": "x=\"BASH\"; printf \"%s\\n\" \"${x,,}\"",
+      "expected": "bash",
+      "explanation": "Die Ausgabe ändern, ohne x zu mutieren.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B012",
+      "title": "Addition",
+      "concept": "arithmetic",
+      "bash": "printf \"%s\\n\" \"$((7 + 5))\"",
+      "expected": "12",
+      "explanation": "Ganzzahlarithmetik; kein Fließkomma.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B013",
+      "title": "Modulo",
+      "concept": "modulo",
+      "bash": "printf \"%s\\n\" \"$((17 % 5))\"",
+      "expected": "2",
+      "explanation": "Rest einer ganzzahligen Division.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B014",
+      "title": "Potenz",
+      "concept": "power",
+      "bash": "printf \"%s\\n\" \"$((2 ** 8))\"",
+      "expected": "256",
+      "explanation": "Ganzzahlpotenz innerhalb des Plattformzahlenbereichs.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B015",
+      "title": "Bedingung",
+      "concept": "branch",
+      "bash": "x=11; if [[ $x -gt 10 ]]; then printf \"gross\\n\"; else printf \"klein\\n\"; fi",
+      "expected": "gross",
+      "explanation": "Ein expliziter ganzzahliger Vergleich wählt einen Pfad.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B016",
+      "title": "Gleichheit",
+      "concept": "equal",
+      "bash": "x=\"Bash\"; if [[ \"$x\" == \"Bash\" ]]; then printf \"gleich\\n\"; fi",
+      "expected": "gleich",
+      "explanation": "Quotierter Literalvergleich in [[ ]].",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B017",
+      "title": "Case",
+      "concept": "case",
+      "bash": "x=\"ja\"; case \"$x\" in ja) printf \"okay\\n\";; *) printf \"offen\\n\";; esac",
+      "expected": "okay",
+      "explanation": "Benannte Alternativen prüfen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B018",
+      "title": "For-Schleife",
+      "concept": "for",
+      "bash": "for x in a b c; do printf \"%s\\n\" \"$x\"; done",
+      "expected": "a\nb\nc",
+      "explanation": "Über eine endliche Wortliste iterieren.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B019",
+      "title": "Zählende Schleife",
+      "concept": "count",
+      "bash": "for ((i=1;i<=3;i++)); do printf \"%s\\n\" \"$i\"; done",
+      "expected": "1\n2\n3",
+      "explanation": "Initialisierung, Grenze und Schritt binden.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B020",
+      "title": "While",
+      "concept": "while",
+      "bash": "i=0; while ((i<3)); do printf \"%s\\n\" \"$i\"; i=$((i+1)); done",
+      "expected": "0\n1\n2",
+      "explanation": "Die Bedingung vor jedem Durchlauf prüfen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B021",
+      "title": "Until",
+      "concept": "until",
+      "bash": "i=0; until ((i==2)); do i=$((i+1)); done; printf \"%s\\n\" \"$i\"",
+      "expected": "2",
+      "explanation": "Wiederholen, bis die Bedingung erfolgreich ist.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B022",
+      "title": "Break",
+      "concept": "break",
+      "bash": "for x in a b c; do [[ \"$x\" == b ]] && break; printf \"%s\\n\" \"$x\"; done",
+      "expected": "a",
+      "explanation": "Die Schleife vorzeitig verlassen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B023",
+      "title": "Continue",
+      "concept": "continue",
+      "bash": "for x in a b c; do [[ \"$x\" == b ]] && continue; printf \"%s\\n\" \"$x\"; done",
+      "expected": "a\nc",
+      "explanation": "Nur diesen Schleifendurchlauf überspringen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B024",
+      "title": "Funktion",
+      "concept": "function",
+      "bash": "greet(){ printf \"Hallo %s\\n\" \"$1\"; }; greet Welt",
+      "expected": "Hallo Welt",
+      "explanation": "Eine benannte wiederverwendbare Handlung mit Argument.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B025",
+      "title": "Lokale Variable",
+      "concept": "local",
+      "bash": "x=\"aussen\"; f(){ local x=\"innen\"; printf \"%s\\n\" \"$x\"; }; f; printf \"%s\\n\" \"$x\"",
+      "expected": "innen\naussen",
+      "explanation": "Lokale Bindung einer Funktion von der äußeren trennen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B026",
+      "title": "Argumente",
+      "concept": "arguments",
+      "bash": "set -- rot blau; printf \"%s / %s / %s\\n\" \"$#\" \"$1\" \"$2\"",
+      "expected": "2 / rot / blau",
+      "explanation": "Positionsparameter und Argumentzahl beobachten.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B027",
+      "title": "Shift",
+      "concept": "shift",
+      "bash": "set -- eins zwei drei; shift; printf \"%s\\n\" \"$1\"",
+      "expected": "zwei",
+      "explanation": "Erstes Positionsargument aus dem aktuellen Parametersatz entfernen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B028",
+      "title": "Array",
+      "concept": "array",
+      "bash": "a=(rot blau gruen); printf \"%s\\n\" \"${a[1]}\"",
+      "expected": "blau",
+      "explanation": "Ein nullbasiert adressiertes Array.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B029",
+      "title": "Arraygröße",
+      "concept": "array-size",
+      "bash": "a=(a b c); printf \"%s\\n\" \"${#a[@]}\"",
+      "expected": "3",
+      "explanation": "Elementzahl statt Stringlänge bestimmen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B030",
+      "title": "Arrayiteration",
+      "concept": "array-loop",
+      "bash": "a=(\"rot blau\" gruen); printf \"%s\\n\" \"${a[@]}\"",
+      "expected": "rot blau\ngruen",
+      "explanation": "Quotiertes @ erhält Elementgrenzen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B031",
+      "title": "Assoziatives Array",
+      "concept": "map",
+      "bash": "declare -A a=([farbe]=blau); printf \"%s\\n\" \"${a[farbe]}\"",
+      "expected": "blau",
+      "explanation": "Schlüssel-Wert-Bindung; Bash 4 oder neuer.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B032",
+      "title": "Subshell",
+      "concept": "subshell",
+      "bash": "x=alt; (x=neu); printf \"%s\\n\" \"$x\"",
+      "expected": "alt",
+      "explanation": "Die Bindung in der Subshell verändert den Elternwert nicht.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B033",
+      "title": "Same-shell group",
+      "concept": "group",
+      "bash": "x=alt; { x=neu; }; printf \"%s\\n\" \"$x\"",
+      "expected": "neu",
+      "explanation": "Eine Gruppe läuft hier in derselben Shell.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B034",
+      "title": "Command substitution",
+      "concept": "substitution",
+      "bash": "x=$(printf \"Hallo\"); printf \"%s\\n\" \"$x\"",
+      "expected": "Hallo",
+      "explanation": "stdout aufnehmen; nachfolgende Newlines werden entfernt.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B035",
+      "title": "Here-string",
+      "concept": "here-string",
+      "bash": "read -r x <<< \"Hallo\"; printf \"%s\\n\" \"$x\"",
+      "expected": "Hallo",
+      "explanation": "Text an stdin von read geben; eine Newline wird hinzugefügt.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B036",
+      "title": "Mehrzeilig lesen",
+      "concept": "mapfile",
+      "bash": "mapfile -t a < <(printf \"rot\\nblau\\n\"); printf \"%s\\n\" \"${a[1]}\"",
+      "expected": "blau",
+      "explanation": "Zeilen über Process Substitution in ein Array lesen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B037",
+      "title": "Exit-Status",
+      "concept": "status",
+      "bash": "false; rc=$?; printf \"%s\\n\" \"$rc\"",
+      "expected": "1",
+      "explanation": "Der Rückgabestatus ist kein Textwert und kein Wahrheitsbeweis.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B038",
+      "title": "Fallback",
+      "concept": "fallback",
+      "bash": "false || printf \"Alternative\\n\"",
+      "expected": "Alternative",
+      "explanation": "Die Alternative folgt bei einem nicht erfolgreichen Status.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B039",
+      "title": "Erfolgskette",
+      "concept": "and",
+      "bash": "true && printf \"weiter\\n\"",
+      "expected": "weiter",
+      "explanation": "Nur nach Status null fortsetzen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B040",
+      "title": "Negation",
+      "concept": "not",
+      "bash": "if ! false; then printf \"invertierter Status\\n\"; fi",
+      "expected": "invertierter Status",
+      "explanation": "Den Erfolgsstatus invertieren, keine semantische Weltwahrheit.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B041",
+      "title": "Sortieren",
+      "concept": "sort",
+      "bash": "printf \"c\\na\\nb\\n\" | LC_ALL=C sort",
+      "expected": "a\nb\nc",
+      "explanation": "Eine benannte Sortierreihenfolge verwenden.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B042",
+      "title": "Eindeutige Zeilen",
+      "concept": "uniq",
+      "bash": "printf \"a\\na\\nb\\n\" | uniq",
+      "expected": "a\nb",
+      "explanation": "Nur benachbarte gleiche Zeilen zusammenfassen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B043",
+      "title": "Filtern",
+      "concept": "grep",
+      "bash": "printf \"rot\\nblau\\nrotbraun\\n\" | grep -F rot",
+      "expected": "rot\nrotbraun",
+      "explanation": "Fester Teilstring; Großschreibung bleibt relevant.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B044",
+      "title": "Transformieren",
+      "concept": "sed",
+      "bash": "printf \"rot\\n\" | sed \"s/rot/blau/\"",
+      "expected": "blau",
+      "explanation": "Eine Zeilentransformation; kein Originaldatei-Umschreiben.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B045",
+      "title": "Feld wählen",
+      "concept": "awk",
+      "bash": "printf 'rot 7\\n' | awk '{print $2}'",
+      "expected": "7",
+      "explanation": "Ein whitespace-getrenntes Feld ausgeben.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B046",
+      "title": "Spalte wählen",
+      "concept": "cut",
+      "bash": "printf \"rot,7\\n\" | cut -d, -f2",
+      "expected": "7",
+      "explanation": "Ein durch Trennzeichen gebundenes Feld auswählen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B047",
+      "title": "Zeichen übersetzen",
+      "concept": "tr",
+      "bash": "printf \"abc\\n\" | tr a-z A-Z",
+      "expected": "ABC",
+      "explanation": "ASCII-Zeichenabbildung.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B048",
+      "title": "Erste Zeile",
+      "concept": "head",
+      "bash": "printf \"a\\nb\\n\" | head -n1",
+      "expected": "a",
+      "explanation": "Eine begrenzte Vorschau mit erhaltenem Rest als Quelle.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B049",
+      "title": "Letzte Zeile",
+      "concept": "tail",
+      "bash": "printf \"a\\nb\\n\" | tail -n1",
+      "expected": "b",
+      "explanation": "Das letzte Element eines endlichen Inputs.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B050",
+      "title": "Zeilen zählen",
+      "concept": "wc",
+      "bash": "printf \"a\\nb\\n\" | wc -l | tr -d \" \"",
+      "expected": "2",
+      "explanation": "Newline-Anzahl im gegebenen Input.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B051",
+      "title": "Brace expansion",
+      "concept": "brace",
+      "bash": "printf \"%s\\n\" item{1..3}",
+      "expected": "item1\nitem2\nitem3",
+      "explanation": "Expansion vor der Ausführung.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B052",
+      "title": "Quoting",
+      "concept": "quoting",
+      "bash": "x=\"a b\"; printf \"[%s]\\n\" \"$x\"",
+      "expected": "[a b]",
+      "explanation": "Die Elementgrenze gegen Wortaufteilung schützen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B053",
+      "title": "Literal",
+      "concept": "literal",
+      "bash": "printf '%s\\n' '$HOME'",
+      "expected": "$HOME",
+      "explanation": "Einfaches Quoting verhindert Variablenexpansion.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B054",
+      "title": "Formatierte Zahl",
+      "concept": "format",
+      "bash": "printf \"%04d\\n\" 7",
+      "expected": "0007",
+      "explanation": "Darstellung ändern, der Zahlenwert bleibt sieben.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B055",
+      "title": "Umgebung",
+      "concept": "environment",
+      "bash": "export BB_DEMO=Hallo; bash -c 'printf \"%s\\n\" \"$BB_DEMO\"'",
+      "expected": "Hallo",
+      "explanation": "Eine Variable an einen Kindprozess weitergeben.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B056",
+      "title": "Pipefail",
+      "concept": "pipefail",
+      "bash": "set -o pipefail; false | true; printf \"%s\\n\" \"$?\"",
+      "expected": "1",
+      "explanation": "Pipelinefehler auch vor dem letzten Prozess sichtbar machen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B057",
+      "title": "PIPESTATUS",
+      "concept": "pipestatus",
+      "bash": "false | true; printf \"%s %s\\n\" \"${PIPESTATUS[@]}\"",
+      "expected": "1 0",
+      "explanation": "Einzelne Pipelinezustände unmittelbar aufnehmen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B058",
+      "title": "Warten",
+      "concept": "wait",
+      "bash": "(exit 0) & pid=$!; wait \"$pid\"; printf \"%s\\n\" \"$?\"",
+      "expected": "0",
+      "explanation": "Auf diesen eigenen Kindprozess warten.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B059",
+      "title": "Regex",
+      "concept": "regex",
+      "bash": "x=abc123; if [[ \"$x\" =~ ^([a-z]+)([0-9]+)$ ]]; then printf \"%s / %s\\n\" \"${BASH_REMATCH[1]}\" \"${BASH_REMATCH[2]}\"; fi",
+      "expected": "abc / 123",
+      "explanation": "Gruppen eines gebundenen regulären Ausdrucks lesen.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "B060",
+      "title": "FORTUNA Maximum",
+      "concept": "maximum",
+      "bash": "a=(-5 -2 -9); best=${a[0]}; for x in \"${a[@]}\"; do ((x>best)) && best=$x; done; printf \"%s\\n\" \"$best\"",
+      "expected": "-2",
+      "explanation": "Maximum einer nichtleeren endlichen Ganzzahlliste, auch negativ.",
+      "source": "https://www.gnu.org/software/bash/manual/bash.html",
+      "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    }
+  ],
+  "bridges": {
+    "einstieg": [
+      "Bedienen und Beobachten",
+      "Eingabe, stdout, Exit-Status und benannte Zustände.",
+      "printf"
+    ],
+    "ki": [
+      "Datenfluss statt Modellgleichsetzung",
+      "Bash orchestriert Eingaben und Programme; eine Shellregel ist kein trainiertes Modell.",
+      "branch"
+    ],
+    "machine": [
+      "Prozess und Repräsentation",
+      "Umgebung, Subshell und Pipeline machen Prozessgrenzen sichtbar.",
+      "subshell"
+    ],
+    "html": [
+      "Dokument und Ausgabe",
+      "Textausgabe kann ein Dokument erzeugen; HTML-Rendering bleibt ein eigener Schritt.",
+      "quoting"
+    ],
+    "python": [
+      "Zwei Laufzeitmodelle",
+      "Variablen, Listen und Verzweigungen vergleichen; Typen und Wortaufteilung unterscheiden.",
+      "array"
+    ],
+    "js": [
+      "Ereignis und Prozess",
+      "Async-Objekte und Shellprozesse haben unterschiedliche Lebenszyklen.",
+      "wait"
+    ],
+    "sec": [
+      "Schutz und Eingabe",
+      "Quoting, Exit-Status und eng gebundene lokale Daten als defensive Grundlagen. Keine automatische Zielprüfung.",
+      "quoting"
+    ],
+    "math": [
+      "Metrik und Zahlenbereich",
+      "Bash-Ganzzahlen und formale Funktionen unterscheiden.",
+      "arithmetic"
+    ],
+    "mktg": [
+      "Daten auswählen",
+      "Tabellenauswertung als Arbeitshilfe; Wirkung und Zustimmung separat prüfen.",
+      "grep"
+    ],
+    "seo": [
+      "Text und strukturierte Daten",
+      "Filter sind keine Suchmaschinenbewertung; Ranking bleibt ein eigenes Modell.",
+      "sort"
+    ],
+    "proj": [
+      "Komposition",
+      "Funktionen, Argumente, Exit-Status und Tests zu überprüfbaren Programmen verbinden.",
+      "function"
+    ],
+    "srv": [
+      "Shell und Betriebssystem",
+      "Prozessgrenzen, Umgebung und Status sichtbar machen.",
+      "environment"
+    ],
+    "matheanfassen": [
+      "Modell und Darstellung",
+      "Numerische Rechnung von Visualisierung und physischer Wirkung trennen.",
+      "maximum"
+    ]
+  },
+  "sources": [
+    [
+      "GNU Bash",
+      "https://www.gnu.org/software/bash/manual/bash.html"
+    ],
+    [
+      "Git",
+      "https://git-scm.com/docs"
+    ],
+    [
+      "PowerShell",
+      "https://learn.microsoft.com/powershell/"
+    ],
+    [
+      "Python",
+      "https://docs.python.org/3/tutorial/"
+    ],
+    [
+      "MDN JavaScript",
+      "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
+    ],
+    [
+      "Rust",
+      "https://doc.rust-lang.org/book/"
+    ],
+    [
+      "C#",
+      "https://learn.microsoft.com/dotnet/csharp/"
+    ],
+    [
+      "CS50",
+      "https://cs50.harvard.edu/x/"
+    ],
+    [
+      "freeCodeCamp",
+      "https://www.freecodecamp.org/learn/"
+    ],
+    [
+      "Khan Academy",
+      "https://www.khanacademy.org/"
+    ]
+  ],
+  "license": "ISC for original code and lessons; external sites linked, not copied"
+}

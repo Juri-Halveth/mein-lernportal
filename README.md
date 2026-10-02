@@ -48,3 +48,11 @@ Die Plattform wurde aus dem geprüften, kontofreien Lernstudio-Stand `8f171e7` a
 ## Lizenz
 
 Originaler Plattformcode und veröffentlichte Originallektionen stehen unter der [ISC-Lizenz](LICENSE.txt). Separat lizenzierte Bestandteile sind in [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt) aufgeführt.
+
+## BASH BIG BANG
+
+[Live öffnen](https://juri-halveth.github.io/mein-lernportal/big-bang/) · 702 Originallektionen aus demselben Curriculum, 60 ausführbare Bash-Beispiele, 13 Themenbrücken und neun fachliche Perspektiven.
+
+Keine zweite Curriculum-Kopie: Die Website lädt ../curriculum.js direkt. Ein Push auf main aktualisiert die bestehende GitHub-Pages-Seite. Die Actions-Prüfung führt die 60 festen Bash-Beispiele auf Ubuntu aus und vergleicht stdout. Fremde Plattformen werden verlinkt; private Quelldokumente sind nicht enthalten. Die Textansicht ergänzt das Originalportal, dessen interaktive Aufgaben erhalten bleiben.
+
+Räumliche Gestaltung: HTML/CSS/SVG zuerst, Three.js/WebGL und optional WebXR als nächste Ausbaustufe. Physische Materialisierung bleibt ein eigener Hardware- und Messauftrag.

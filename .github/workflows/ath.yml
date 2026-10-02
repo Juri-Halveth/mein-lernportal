@@ -1,0 +1,22 @@
+name: ATH website checks
+on:
+  push:
+    branches: [main]
+    paths: ['ath/**', 'tests/ath.cjs', '.github/workflows/ath.yml']
+  pull_request:
+    paths: ['ath/**', 'tests/ath.cjs', '.github/workflows/ath.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - run: node tests/ath.cjs
+      - run: npm test

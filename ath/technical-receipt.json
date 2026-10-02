@@ -1,0 +1,30 @@
+{
+  "unit": "ATH",
+  "recordedAt": "2026-10-02T23:38:37.9536152Z",
+  "v05": {
+    "sourceSHA256": "D33C7B0BEA4BA6C78977C56D67AB1080EA2E538440996AA7A532E08DB3EB031A",
+    "passed": [
+      "Three distinct wallets persisted",
+      "Bootstrap supply and founder vesting",
+      "Founder handoff complete",
+      "Transfer exact balances and conserved supply",
+      "Stored signature verifies",
+      "Persisted state root reproducible",
+      "Revenue persisted with exact remainder conservation",
+      "Post-handoff contribution with no founder increment",
+      "State loads in a fresh PowerShell process"
+    ],
+    "selftestPassed": 14,
+    "observedAt": "2026-10-02T23:38:04.3856545Z"
+  },
+  "v03": {
+    "threeNodes": true,
+    "distinctKeys": true,
+    "threeSignatures": true,
+    "twoSignatures": true,
+    "hashLinked": true,
+    "observedAt": "2026-10-02T23:38:21.8182984Z"
+  },
+  "scope": "Local functional integration; separate corrected packages",
+  "testNodesStopped": true
+}

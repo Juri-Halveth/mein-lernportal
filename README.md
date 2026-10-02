@@ -43,7 +43,7 @@ Die Prüfung bindet den Inhaltssnapshot, zählt Tracks, Stufen und eindeutige Le
 
 ## Herkunft
 
-Die Plattform wurde aus dem geprüften, kontofreien Lernstudio-Stand `8f171e7` aufgebaut. Der kanonische LF-Snapshot des veröffentlichten Curriculums ist mit SHA-256 `8c40f2071c6a2d67f91c6e759fe2c36de4877321e61001b51020376ffc693432` gebunden. Dadurch bleibt der neue öffentliche Stand vom weiterhin accountgebundenen Hosting unter `mein-lernstudio.com` getrennt.
+Die Plattform wurde aus dem geprüften, kontofreien Lernstudio-Stand `8f171e7` aufgebaut. Der kanonische LF-Snapshot des veröffentlichten Curriculums ist mit SHA-256 `8c40f2071c6a2d67f91c6e759fe2c36de4877321e61001b51020376ffc693432` gebunden. Dieses Portal bleibt ein eigenständiger Snapshot. Das weiterentwickelte [Lernstudio](https://juri-halveth.github.io/lernstudio/) verwendet ebenfalls GitHub Pages ohne eigene bezahlte Domain.
 
 ## Lizenz
 

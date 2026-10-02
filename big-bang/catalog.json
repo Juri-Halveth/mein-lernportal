@@ -1,6 +1,6 @@
 {
   "schema": "bash-big-bang.v1",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "sourceCommit": "1e6e149107be689f3c3c62c22771c43dfaf925a7",
   "curriculumSha256": "8c40f2071c6a2d67f91c6e759fe2c36de4877321e61001b51020376ffc693432",
   "sourceLessonCount": 702,
@@ -604,6 +604,156 @@
       "explanation": "Maximum einer nichtleeren endlichen Ganzzahlliste, auch negativ.",
       "source": "https://www.gnu.org/software/bash/manual/bash.html",
       "execution": "GITHUB_ACTIONS_TESTED_AFTER_CI"
+    },
+    {
+      "id": "G001",
+      "title": "Git · Repository anlegen",
+      "concept": "git-1",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; git branch --show-current",
+      "expected": "main",
+      "explanation": "Repository und benannten ersten Branch in einem isolierten Testverzeichnis anlegen.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G002",
+      "title": "Git · Arbeitsbaum beobachten",
+      "concept": "git-2",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git status --porcelain",
+      "expected": "?? readme.txt",
+      "explanation": "Unversionierte Datei ist noch kein Commit.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G003",
+      "title": "Git · Staging",
+      "concept": "git-3",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git add readme.txt; git diff --cached --name-only",
+      "expected": "readme.txt",
+      "explanation": "Eine Datei für den nächsten Commit vormerken.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G004",
+      "title": "Git · Commit",
+      "concept": "git-4",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git add readme.txt; git commit -qm \"Erster Lernstand\"; git log -1 --format=%s",
+      "expected": "Erster Lernstand",
+      "explanation": "Quellzustand lokal als Commit erhalten.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G005",
+      "title": "Git · Historie",
+      "concept": "git-5",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git add readme.txt; git commit -qm \"Erster Lernstand\"; printf \"Welt\\n\" >> readme.txt; git add readme.txt; git commit -qm \"Zweiter Lernstand\"; git log --format=%s",
+      "expected": "Zweiter Lernstand\nErster Lernstand",
+      "explanation": "Zwei Commitnachrichten in umgekehrter Zeitreihenfolge.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G006",
+      "title": "Git · Branch erstellen",
+      "concept": "git-6",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git add readme.txt; git commit -qm \"Erster Lernstand\"; git branch experiment; git branch --list experiment | sed \"s/^..//\"",
+      "expected": "experiment",
+      "explanation": "Eine alternative Fortsetzung vom selben Commit markieren.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G007",
+      "title": "Git · Branch wechseln",
+      "concept": "git-7",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git add readme.txt; git commit -qm \"Erster Lernstand\"; git switch -qc experiment; git branch --show-current",
+      "expected": "experiment",
+      "explanation": "Arbeitskontext ausdrücklich auf einen neuen Branch wechseln.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G008",
+      "title": "Git · Diff",
+      "concept": "git-8",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git add readme.txt; git commit -qm \"Erster Lernstand\"; printf \"Welt\\n\" >> readme.txt; git diff --name-only",
+      "expected": "readme.txt",
+      "explanation": "Dateien mit noch nicht committeten Änderungen identifizieren.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G009",
+      "title": "Git · Commitinhalt lesen",
+      "concept": "git-9",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git add readme.txt; git commit -qm \"Erster Lernstand\"; git show HEAD:readme.txt",
+      "expected": "Hallo",
+      "explanation": "Eine Datei direkt aus einem gebundenen Commit lesen.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G010",
+      "title": "Git · Gitignore",
+      "concept": "git-10",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"cache/\\n\" > .gitignore; mkdir cache; printf \"demo\" > cache/item; git check-ignore cache/item",
+      "expected": "cache/item",
+      "explanation": "Ignorierregel wirkt auf ungetrackte Dateien, nicht rückwirkend auf Historie.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G011",
+      "title": "Git · Tag",
+      "concept": "git-11",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git add readme.txt; git commit -qm \"Erster Lernstand\"; git tag v0.1.0; git tag --list",
+      "expected": "v0.1.0",
+      "explanation": "Einen lokalen Versionsanker setzen.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G012",
+      "title": "Git · Remoteadresse",
+      "concept": "git-12",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; git remote add origin https://github.com/example/learning.git; git remote get-url origin",
+      "expected": "https://github.com/example/learning.git",
+      "explanation": "Nur die Adresse konfigurieren; keine Netzwerkverbindung.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G013",
+      "title": "Git · Log zählen",
+      "concept": "git-13",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git add readme.txt; git commit -qm \"Erster Lernstand\"; git rev-list --count HEAD",
+      "expected": "1",
+      "explanation": "Erreichbare Commits in diesem Testgraph zählen.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G014",
+      "title": "Git · Branchwirkung",
+      "concept": "git-14",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git add readme.txt; git commit -qm \"Erster Lernstand\"; git switch -qc experiment; printf \"Welt\\n\" >> readme.txt; git add readme.txt; git commit -qm \"Experiment\"; git switch -q main; git show HEAD:readme.txt",
+      "expected": "Hallo",
+      "explanation": "Main bleibt auf seiner eigenen Zustandsfassung.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
+    },
+    {
+      "id": "G015",
+      "title": "Git · Sauberer Arbeitsbaum",
+      "concept": "git-15",
+      "bash": "git init -q -b main; git config user.name \"Learning Example\"; git config user.email \"example@example.invalid\"; git config commit.gpgsign false; printf \"Hallo\\n\" > readme.txt; git add readme.txt; git commit -qm \"Erster Lernstand\"; if [[ -z $(git status --porcelain) ]]; then printf \"sauber\\n\"; fi",
+      "expected": "sauber",
+      "explanation": "Sauberheit relativ zum aktuellen Index und Commit prüfen.",
+      "source": "https://git-scm.com/docs",
+      "execution": "GITHUB_ACTIONS_ISOLATED_TEST"
     }
   ],
   "bridges": {

@@ -269,4 +269,5 @@ cat > "$out/technical-receipt.json" <<'ATH_TEMPLATE_9'
   "testNodesStopped": true
 }
 ATH_TEMPLATE_9
+cp -- "${BASH_SOURCE[0]}" "$out/BUILD_ATH_WEBSITE.sh"
 printf "ATH-Webseitentexte gebaut: %s\nPowerPoint bei Bedarf separat daneben speichern.\n" "$out"

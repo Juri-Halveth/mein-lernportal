@@ -1,9 +1,9 @@
 # ATH in Git Bash starten
 
-1. Windows-StartmenÃ¼ Ã¶ffnen, â€žGit Bashâ€œ suchen und Ã¶ffnen.
+1. Windows-StartmenÃƒÂ¼ ÃƒÂ¶ffnen, Ã¢â‚¬Å¾Git BashÃ¢â‚¬Å“ suchen und ÃƒÂ¶ffnen.
 2. Einen Codeblock mit Strg+C kopieren.
-3. Im Git-Bash-Fenster Rechtsklick â†’ Paste/EinfÃ¼gen. Alternativ Umschalt+EinfÃ¼gen.
-4. Enter drÃ¼cken. Das Dollarzeichen des Terminal-Prompts wird nicht mitkopiert.
+3. Im Git-Bash-Fenster Rechtsklick Ã¢â€ â€™ Paste/EinfÃƒÂ¼gen. Alternativ Umschalt+EinfÃƒÂ¼gen.
+4. Enter drÃƒÂ¼cken. Das Dollarzeichen des Terminal-Prompts wird nicht mitkopiert.
 
 ## Erster Befehl
 
@@ -22,33 +22,37 @@ bash ATH_BASH_EXPERIMENT.sh demo
 
 Erwartet: ANNA 7.0000 ATH, BEN 3.0000 ATH, TOTAL 10.0000 ATH und DEMO PASS.
 
-Die Demonstration legt getrennte lokale TestschlÃ¼ssel und ein Ledger in einem neuen temporÃ¤ren Verzeichnis an. Die genaue Adresse zeigt der Lauf. Die SchlÃ¼ssel werden nicht hochgeladen. Das sind Beispieleinheiten eines eigenen Bash-Experiments.
+Die Demonstration legt getrennte lokale TestschlÃƒÂ¼ssel und ein Ledger in einem neuen temporÃƒÂ¤ren Verzeichnis an. Die genaue Adresse zeigt der Lauf. Die SchlÃƒÂ¼ssel werden nicht hochgeladen. Das sind Beispieleinheiten eines eigenen Bash-Experiments.
 
 ## Ein Skript selbst in der Konsole schreiben
 
-Den ganzen Block einschlieÃŸlich der beiden ATH_CODE-Zeilen einfÃ¼gen:
+Den ganzen Block einschlieÃƒÅ¸lich der beiden ATH_CODE-Zeilen einfÃƒÂ¼gen:
 
 ```bash
 cat > mein-erstes-ath.sh <<'ATH_CODE'
 #!/usr/bin/env bash
-printf 'ATH: Mein erstes Bash-Skript lÃ¤uft!\n'
+printf 'ATH: Mein erstes Bash-Skript lÃƒÂ¤uft!\n'
 ATH_CODE
 bash mein-erstes-ath.sh
 ```
 
-Die erste Zeile Ã¶ffnet die Datei zum Schreiben. Die alleinstehende letzte ATH_CODE-Zeile beendet den Text. AnschlieÃŸend fÃ¼hrt bash die Datei aus. Ein chmod ist fÃ¼r â€žbash datei.shâ€œ nicht nÃ¶tig.
+Die erste Zeile ÃƒÂ¶ffnet die Datei zum Schreiben. Die alleinstehende letzte ATH_CODE-Zeile beendet den Text. AnschlieÃƒÅ¸end fÃƒÂ¼hrt bash die Datei aus. Ein chmod ist fÃƒÂ¼r Ã¢â‚¬Å¾bash datei.shÃ¢â‚¬Å“ nicht nÃƒÂ¶tig.
 
-## Was Bash hier Ã¼bernimmt
+## Was Bash hier ÃƒÂ¼bernimmt
 
-Buchungslogik, ganzzahlige Untereinheiten, Hashverkettung, Ledger-Replay, CLI und PrÃ¼fungen sind in Bash. OpenSSL erzeugt und prÃ¼ft RSA-Signaturen; sha256sum berechnet Hashes. Das ist keine ausschlieÃŸlich aus Bash-Builtins bestehende Kryptografie. Der Webseiten-Generator ist ebenfalls Bash; der Browser benÃ¶tigt weiter HTML/CSS und JavaScript fÃ¼r Interaktion.
+Buchungslogik, ganzzahlige Untereinheiten, Hashverkettung, Ledger-Replay, CLI und PrÃƒÂ¼fungen sind in Bash. OpenSSL erzeugt und prÃƒÂ¼ft RSA-Signaturen; sha256sum berechnet Hashes. Das ist keine ausschlieÃƒÅ¸lich aus Bash-Builtins bestehende Kryptografie. Der Webseiten-Generator ist ebenfalls Bash; der Browser benÃƒÂ¶tigt weiter HTML/CSS und JavaScript fÃƒÂ¼r Interaktion.
 
 ## Bewusster Umfang dieses ersten Experiments
 
-Ein Prozess; ANNA kann an BEN Ã¼bertragen; feste Beispielmenge 10 ATH. Beitragsausgabe, GrÃ¼nder-Vesting, Revenue, unabhÃ¤ngige Nodes, gleichzeitige Writer und Crash-Recovery sind noch eigene Baustufen. Die PowerShell-Pakete bleiben die getrennte Vergleichsbasis; dieses Experiment ersetzt sie nicht.
+Ein Prozess; ANNA kann an BEN ÃƒÂ¼bertragen; feste Beispielmenge 10 ATH. Beitragsausgabe, GrÃƒÂ¼nder-Vesting, Revenue, unabhÃƒÂ¤ngige Nodes, gleichzeitige Writer und Crash-Recovery sind noch eigene Baustufen. Die PowerShell-Pakete bleiben die getrennte Vergleichsbasis; dieses Experiment ersetzt sie nicht.
 
-Quellen fÃ¼r EinfÃ¼gen: https://mintty.github.io/mintty.1.html
+Quellen fÃƒÂ¼r EinfÃƒÂ¼gen: https://mintty.github.io/mintty.1.html
 Webseite und Bash-Code: ISC, siehe LICENSE.txt.
 
-## Beträge jetzt direkt in ATH
+## BetrÃ¤ge jetzt direkt in ATH
 
-`transfer 1` bedeutet 1 ATH. `transfer 2` bedeutet 2 ATH. `transfer 0.0001` bedeutet eine Untereinheit. Punkt oder Komma sind zulässig; höchstens vier Nachkommastellen. Die gespeicherten Ledgerbeträge bleiben unverändert in Untereinheiten.
+`transfer 1` bedeutet 1 ATH. `transfer 2` bedeutet 2 ATH. `transfer 0.0001` bedeutet eine Untereinheit. Punkt oder Komma sind zulÃ¤ssig; hÃ¶chstens vier Nachkommastellen. Die gespeicherten LedgerbetrÃ¤ge bleiben unverÃ¤ndert in Untereinheiten.
+
+## Beide Richtungen
+
+`bash "$ATH_SCRIPT" transfer ANNA BEN 2` überträgt 2 ATH von Anna an Ben. `bash "$ATH_SCRIPT" transfer BEN ANNA 1` überträgt 1 ATH zurück. Die Kurzform `transfer 2` bleibt Anna → Ben. Jede Übertragung nutzt den Schlüssel ihres Senders.

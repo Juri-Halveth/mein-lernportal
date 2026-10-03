@@ -31,3 +31,17 @@ for invalid in 0 -1 1.00001 01 1e2 abc ''; do
 done
 [[ $(sha256sum "$ATH_ROOT/ledger.tsv") == "$before" ]]
 printf 'DECIMAL ATH PASS: 1, 2, smallest subunit, comma, invalid inputs rejected without ledger changes.\n'
+
+bash "$source_script" transfer BEN ANNA 1
+status=$(bash "$source_script" status)
+[[ $status == *'ANNA: 7.7499 ATH'* && $status == *'BEN:  2.2501 ATH'* ]]
+bash "$source_script" transfer ANNA BEN 0.5
+bash "$source_script" verify
+status=$(bash "$source_script" status)
+[[ $status == *'ANNA: 7.2499 ATH'* && $status == *'BEN:  2.7501 ATH'* ]]
+before=$(sha256sum "$ATH_ROOT/ledger.tsv")
+for args in 'BEN BEN 1' 'OTHER ANNA 1' 'BEN ANNA 9' 'BEN ANNA' 'ANNA BEN 1 extra'; do
+ if bash "$source_script" transfer $args >/dev/null 2>&1; then echo "FAIL invalid participants or balance: $args"; exit 1; fi
+done
+[[ $(sha256sum "$ATH_ROOT/ledger.tsv") == "$before" ]]
+printf 'BIDIRECTIONAL ATH PASS: both senders sign, balances conserved, invalid requests unchanged.\n'

@@ -67,8 +67,17 @@ replay(){
  done < "$root/ledger.tsv"
  ((expected>=1 && anna+ben==100000)) || die 'Beispielmenge stimmt nicht'
 }
+parse_ath(){
+ local value=${1:-}
+ [[ $value =~ ^(0|[1-9][0-9]{0,4})([.,]([0-9]{1,4}))?$ ]] || die 'ATH-Betrag erwartet, z.B. 1, 2 oder 0.0001; maximal vier Nachkommastellen'
+ local whole=${BASH_REMATCH[1]} fraction=${BASH_REMATCH[3]:-}
+ fraction="${fraction}0000"; fraction=${fraction:0:4}
+ local amount=$((10#$whole*10000+10#$fraction))
+ ((amount>0)) || die 'Betrag muss größer als null sein'
+ printf '%d' "$amount"
+}
 transfer(){
- local amount=${1:-30000}; [[ $amount =~ ^[1-9][0-9]{0,8}$ ]] || die 'Betrag in positiven ganzzahligen Untereinheiten angeben'
+ local amount; amount=$(parse_ath "${1:-}")
  replay; ((amount<=anna)) || die 'Unzureichendes Guthaben'
  local signed="$expected|$last|TRANSFER|ANNA|BEN|$amount"
  local sig; sig=$(printf '%s' "$signed" | openssl dgst -sha256 -sign "$root/keys/ANNA.private.pem" | openssl base64 -A)
@@ -79,26 +88,26 @@ transfer(){
 status(){ replay; printf 'ANNA: '; quantity "$anna"; printf '\nBEN:  '; quantity "$ben"; printf '\nTOTAL: '; quantity "$((anna+ben))"; printf '\nRECORDS: %d\nCHAIN HEAD: %s\n' "$expected" "$last"; }
 case "$command" in
  init) init;;
- transfer) transfer "${2:-30000}";;
+ transfer) transfer "${2:-}";;
  verify) replay; printf 'PASS: Hashverkettung, Signaturen, Reihenfolge und Beispielmenge.\n';;
  status) status;;
  demo)
   if [[ -z ${ATH_ROOT:-} ]]; then root=$(mktemp -d "${TMPDIR:-/tmp}/ath-bash.XXXXXXXX")/ledger; fi
-  init; transfer 30000; status
+  init; transfer 3; status
   printf 'DEMO PASS. Datenverzeichnis: %s\n' "$root"
   printf 'Scope: ein Prozess, zwei lokale Schlüssel, feste Beispielmenge; keine Gleichwertigkeit mit V0.5.\n';;
  help|--help|-h)
-  printf 'ATH Bash Experiment\n  bash ATH_BASH_EXPERIMENT.sh demo\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh init\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh transfer 30000\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh status\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh verify\n\n30000 Untereinheiten = 3.0000 ATH. Ben kann in diesem ersten Experiment nur empfangen.\nKein Netzwerk, Mint-/Vesting-Modell, paralleler Writer oder Crash-Recovery.\n';;
+  printf 'ATH Bash Experiment\n  bash ATH_BASH_EXPERIMENT.sh demo\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh init\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh transfer 3\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh status\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh verify\n\nEingabe in ATH: 1 = 1 ATH, 2 = 2 ATH, 0.0001 = eine Untereinheit. Punkt oder Komma; maximal vier Nachkommastellen. Ben kann in diesem ersten Experiment nur empfangen.\nKein Netzwerk, Mint-/Vesting-Modell, paralleler Writer oder Crash-Recovery.\n';;
  *) die 'Unbekannter Befehl. Nutze help.';;
 esac
 ATH_TEMPLATE_1
 cat > "$out/ATH_BASH_START.md" <<'ATH_TEMPLATE_2'
 # ATH in Git Bash starten
 
-1. Windows-Startmenü öffnen, „Git Bash“ suchen und öffnen.
+1. Windows-StartmenÃ¼ Ã¶ffnen, â€žGit Bashâ€œ suchen und Ã¶ffnen.
 2. Einen Codeblock mit Strg+C kopieren.
-3. Im Git-Bash-Fenster Rechtsklick → Paste/Einfügen. Alternativ Umschalt+Einfügen.
-4. Enter drücken. Das Dollarzeichen des Terminal-Prompts wird nicht mitkopiert.
+3. Im Git-Bash-Fenster Rechtsklick â†’ Paste/EinfÃ¼gen. Alternativ Umschalt+EinfÃ¼gen.
+4. Enter drÃ¼cken. Das Dollarzeichen des Terminal-Prompts wird nicht mitkopiert.
 
 ## Erster Befehl
 
@@ -117,47 +126,51 @@ bash ATH_BASH_EXPERIMENT.sh demo
 
 Erwartet: ANNA 7.0000 ATH, BEN 3.0000 ATH, TOTAL 10.0000 ATH und DEMO PASS.
 
-Die Demonstration legt getrennte lokale Testschlüssel und ein Ledger in einem neuen temporären Verzeichnis an. Die genaue Adresse zeigt der Lauf. Die Schlüssel werden nicht hochgeladen. Das sind Beispieleinheiten eines eigenen Bash-Experiments.
+Die Demonstration legt getrennte lokale TestschlÃ¼ssel und ein Ledger in einem neuen temporÃ¤ren Verzeichnis an. Die genaue Adresse zeigt der Lauf. Die SchlÃ¼ssel werden nicht hochgeladen. Das sind Beispieleinheiten eines eigenen Bash-Experiments.
 
 ## Ein Skript selbst in der Konsole schreiben
 
-Den ganzen Block einschließlich der beiden ATH_CODE-Zeilen einfügen:
+Den ganzen Block einschlieÃŸlich der beiden ATH_CODE-Zeilen einfÃ¼gen:
 
 ```bash
 cat > mein-erstes-ath.sh <<'ATH_CODE'
 #!/usr/bin/env bash
-printf 'ATH: Mein erstes Bash-Skript läuft!\n'
+printf 'ATH: Mein erstes Bash-Skript lÃ¤uft!\n'
 ATH_CODE
 bash mein-erstes-ath.sh
 ```
 
-Die erste Zeile öffnet die Datei zum Schreiben. Die alleinstehende letzte ATH_CODE-Zeile beendet den Text. Anschließend führt bash die Datei aus. Ein chmod ist für „bash datei.sh“ nicht nötig.
+Die erste Zeile Ã¶ffnet die Datei zum Schreiben. Die alleinstehende letzte ATH_CODE-Zeile beendet den Text. AnschlieÃŸend fÃ¼hrt bash die Datei aus. Ein chmod ist fÃ¼r â€žbash datei.shâ€œ nicht nÃ¶tig.
 
-## Was Bash hier übernimmt
+## Was Bash hier Ã¼bernimmt
 
-Buchungslogik, ganzzahlige Untereinheiten, Hashverkettung, Ledger-Replay, CLI und Prüfungen sind in Bash. OpenSSL erzeugt und prüft RSA-Signaturen; sha256sum berechnet Hashes. Das ist keine ausschließlich aus Bash-Builtins bestehende Kryptografie. Der Webseiten-Generator ist ebenfalls Bash; der Browser benötigt weiter HTML/CSS und JavaScript für Interaktion.
+Buchungslogik, ganzzahlige Untereinheiten, Hashverkettung, Ledger-Replay, CLI und PrÃ¼fungen sind in Bash. OpenSSL erzeugt und prÃ¼ft RSA-Signaturen; sha256sum berechnet Hashes. Das ist keine ausschlieÃŸlich aus Bash-Builtins bestehende Kryptografie. Der Webseiten-Generator ist ebenfalls Bash; der Browser benÃ¶tigt weiter HTML/CSS und JavaScript fÃ¼r Interaktion.
 
 ## Bewusster Umfang dieses ersten Experiments
 
-Ein Prozess; ANNA kann an BEN übertragen; feste Beispielmenge 10 ATH. Beitragsausgabe, Gründer-Vesting, Revenue, unabhängige Nodes, gleichzeitige Writer und Crash-Recovery sind noch eigene Baustufen. Die PowerShell-Pakete bleiben die getrennte Vergleichsbasis; dieses Experiment ersetzt sie nicht.
+Ein Prozess; ANNA kann an BEN Ã¼bertragen; feste Beispielmenge 10 ATH. Beitragsausgabe, GrÃ¼nder-Vesting, Revenue, unabhÃ¤ngige Nodes, gleichzeitige Writer und Crash-Recovery sind noch eigene Baustufen. Die PowerShell-Pakete bleiben die getrennte Vergleichsbasis; dieses Experiment ersetzt sie nicht.
 
-Quellen für Einfügen: https://mintty.github.io/mintty.1.html
+Quellen fÃ¼r EinfÃ¼gen: https://mintty.github.io/mintty.1.html
 Webseite und Bash-Code: ISC, siehe LICENSE.txt.
+
+## Beträge jetzt direkt in ATH
+
+`transfer 1` bedeutet 1 ATH. `transfer 2` bedeutet 2 ATH. `transfer 0.0001` bedeutet eine Untereinheit. Punkt oder Komma sind zulässig; höchstens vier Nachkommastellen. Die gespeicherten Ledgerbeträge bleiben unverändert in Untereinheiten.
 ATH_TEMPLATE_2
-cat > "$out/index.html" <<'ATH_TEMPLATE_4'
+cat > "$out/index.html" <<'ATH_TEMPLATE_5'
 <!doctype html>
-<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ATH ist die digitale Einheit im LEVIATH-Prototyp: Beiträge, Guthaben und überprüfbare Buchungen. Technischer Stand, Beispiel und Quellen."><meta name="theme-color" content="#122e32"><title>ATH · LEVIATH</title><link rel="stylesheet" href="style.css"></head>
-<body><header class="wrap"><a class="brand" href="#">LEVIATH <span>/ ATH</span></a><nav aria-label="Seitennavigation"><a href="#prinzip">Prinzip</a><a href="#stand">Stand</a><a href="#bash">Bash starten</a><a href="#quellen">Quellen</a><a href="../big-bang/">Lernportal ↗</a></nav></header>
-<main><section class="hero wrap"><p class="eyebrow">LEVIATH · Entwicklung vor dem öffentlichen Launch</p><h1>Ein Beitrag.<br>Eine Buchung.<br><em>ATH.</em></h1><div class="intro"><p>ATH ist die digitale Einheit in LEVIATH. Das Programm registriert Beiträge, führt Guthaben und prüft signierte Übertragungen.</p><a class="button" href="#beispiel">Einfach ausprobieren ↓</a><p class="small">Der lokale Kern läuft. Ein öffentliches Netzwerk und reale Auszahlungen sind die nächsten eigenen Entwicklungsschritte.</p></div><div class="hero-note">Quellenstand 03.10.2026 <span>Lokale Funktionstests ausgeführt</span></div></section>
-<section id="prinzip" class="light"><div class="wrap"><p class="eyebrow">Das Prinzip</p><h2>LEVIATH führt das Buch.<br>ATH zählt die Einheiten.</h2><div class="steps"><article><span>01</span><h3>Arbeit registrieren</h3><p>Eine Anleitung, ein Programm oder ein anderes digitales Artefakt erhält einen Inhalts-Hash. Er bindet genau diese Dateifassung.</p></article><article><span>02</span><h3>Beitrag vergüten</h3><p>Eine freigegebene Ausgabe verweist auf das registrierte Artefakt. In V0.5 darf sein Hash einmal für eine Ausgabe verwendet werden.</p></article><article><span>03</span><h3>Guthaben übertragen</h3><p>Der Sender signiert die Buchung. LEVIATH prüft Signatur und Guthaben. V0.5 erhebt dabei keine Protokollgebühr.</p></article></div><p class="footnote">Ein Hash bindet Bytes. Die Bewertung und Berechtigung eines Beitrags benötigen eigene Regeln.</p></div></section>
-<section id="beispiel" class="wrap demo"><div><p class="eyebrow">Ein Beispiel zum Verstehen</p><h2>Anna gibt Ben<br>3 ATH.</h2><p>Die Gesamtmenge bleibt gleich. Hier kannst du den Ablauf mit Beispielzahlen ansehen.</p><p class="small">Diese Ansicht rechnet im Browser. Sie erstellt keine Wallet und verbindet sich mit keinem Ledger.</p></div><div class="book"><p class="book-heading">Beispielbuch · 10 ATH insgesamt</p><table><caption class="sr-only">Guthaben im Übertragungsbeispiel</caption><thead><tr><th>Person</th><th>Guthaben</th></tr></thead><tbody><tr><td>Anna</td><td id="anna">10 ATH</td></tr><tr><td>Ben</td><td id="ben">0 ATH</td></tr></tbody></table><div class="actions"><button id="transfer" type="button">3 ATH übertragen</button><button id="reset" class="secondary" type="button">Zurücksetzen</button></div><p id="result" role="status" aria-live="polite">Bereit: Anna hat 10 ATH, Ben hat 0 ATH.</p></div></section>
-<section id="stand" class="light"><div class="wrap"><p class="eyebrow">Heute technisch vorhanden</p><h2>Der Kern arbeitet.<br>Die Verbindung wächst noch.</h2><div class="status-grid"><article><h3>V0.5 · Guthaben & Beiträge</h3><p>Wallets angelegt, ATH signiert übertragen, Zustand neu geladen und State-Root reproduziert. Bootstrap, Gründer-Handoff und spätere Beitragsausgabe ausgeführt. Einnahmenanteile einschließlich Restbeträgen exakt gebucht.</p><p class="metric">14 Selbsttests + 9 Integrationsprüfungen</p></article><article><h3>V0.3 · Lokales Quorum</h3><p>Drei Prozesse mit verschiedenen Schlüsseln. Ein Block mit drei gültigen Signaturen; nach Stop eines Knotens ein zweiter mit zwei. Die Blöcke sind hashverkettet.</p><p class="metric">2 von 3 Signaturen reichen</p></article></div><p class="footnote">Die Pakete wurden separat geprüft. V0.3 koordiniert Blöcke über einen Controller; die Knoten signieren Vorschlags-Hashes. Alle drei laufen bisher auf einem Rechner.</p></div></section>
-<section class="wrap economics"><p class="eyebrow">Gründeranteil im Bootstrap</p><h2 class="ratio">9 ATH <span>+</span> 1 ATH</h2><p class="large">Neun für das Netzwerk, eine für den Gründer.</p><p>Beispiel mit 10 % Gründeranteil: Der Sonderanteil wird gekoppelt an tatsächliche Netzwerkfreigaben ausgegeben. Mit Ende des Bootstrap-Pools endet dieser Sonderpfad. Spätere Beitragsausgaben können bestehende prozentuale Anteile verwässern.</p></section>
-<section class="light"><div class="wrap"><p class="eyebrow">Nächster Entwicklungsstand</p><h2>Ein gemeinsamer Betrieb.</h2><ol class="roadmap"><li><strong>Pakete zusammenführen</strong><span>Guthabenverwaltung und Quorum brauchen ein gemeinsames Regelwerk. V0.3-Testgebühren und V0.5-Gebührenfreiheit sind unterschiedliche Modelle.</span></li><li><strong>Unabhängige Rechner</strong><span>Regelprüfung, Zustandsabgleich und Wiederherstellung müssen im Mehrrechnerbetrieb nachgewiesen werden.</span></li><li><strong>Reale Verwendung definieren</strong><span>Ausgabeautorität, Bewertung, Rechte und tatsächliche Zahlungen erhalten jeweils eigene Vereinbarungen und Integrationen.</span></li></ol><p class="footnote">ATH hat im geprüften Stand keinen belegten Marktpreis oder zugesagte Einlösbarkeit. Einnahmenbuchungen bewegen kein externes Geld.</p></div></section>
-<section id="bash" class="wrap bash-guide"><p class="eyebrow">Neu · das Bash-Experiment</p><h2>Code kopieren.<br>In Git Bash einfügen.<br>Enter.</h2><p>Öffne unter Windows das Startmenü und suche <strong>Git Bash</strong>. Kopiere den Befehl. Im Terminal: Rechtsklick → Paste/Einfügen, dann Enter. Alternativ: Umschalt+Einfügen.</p><pre><code>printf 'Hallo ATH!\n'</code></pre><p><a href="ATH_BASH_EXPERIMENT.sh" download="ATH_BASH_EXPERIMENT.sh">Bash-Experiment herunterladen ↓</a></p><p>Speichere die Datei in Downloads. Führe dann diese beiden Zeilen in Git Bash aus:</p><pre><code>cd ~/Downloads
-bash ATH_BASH_EXPERIMENT.sh demo</code></pre><p>Der Lauf erzeugt zwei lokale Testschlüssel, überträgt 3 ATH und prüft die Signatur sowie die Hashverkettung. Erwartet: Anna 7 ATH, Ben 3 ATH, Gesamtmenge 10 ATH.</p><p class="small">Dies ist ein eigenes Bash-Lernexperiment mit festem Beispielbestand. Bash führt Buchungen und Replay aus; OpenSSL übernimmt Kryptografie. Beitragsausgabe, Gründer-Vesting und Netzbetrieb folgen als eigene Baustufen.</p><div class="source-links"><a href="ATH_BASH_START.md">Anleitung: eigenes Skript in der Konsole schreiben ↗</a><a href="BUILD_ATH_WEBSITE.sh" download="BUILD_ATH_WEBSITE.sh">Webseiten-Generator in Bash herunterladen ↓</a></div></section><section id="quellen" class="wrap sources"><p class="eyebrow">Quellen · Lizenz · Zuordnung</p><h2>Nachvollziehbar gebaut.</h2><p>Projektkontext: <a href="https://github.com/Juri-Halveth">Juri-Halveth</a> / LEVIATH. Grundlage sind die vier bereitgestellten Entwicklungsstände und die eigenen lokalen Funktionstests vom 03.10.2026. ATH ist die vom Projektverantwortlichen festgelegte Einheitenbezeichnung.</p><div class="source-links"><a href="ATH_EINFACH_ERKLAERT.pptx">PowerPoint: ATH einfach erklärt ↗</a><a href="technical-receipt.json">Technisches Prüfreceipt ↗</a><a href="SOURCES.md">Quellen und Abgrenzung ↗</a><a href="LICENSE.txt">Lizenz der Webseite: ISC ↗</a><a href="LEVIATH_LICENSE_MIT.txt">V0.5-Quelllizenz: MIT ↗</a><a href="https://github.com/Juri-Halveth/mein-lernportal/tree/main/ath">Webseiten-Quellcode ↗</a></div><p class="small">Die Webseite erweitert das Lernportal. Die LEVIATH-Quellpakete behalten ihre eigenen Lizenzangaben. Die Projektbezeichnung und die Copyright-Zuordnung der Quellen bleiben erhalten.</p></section></main><footer class="wrap"><span>LEVIATH / ATH · Stand 03.10.2026</span><a href="../privacy.html">Datenschutz</a><span>Ohne Tracking · ohne Wallet-Verbindung</span></footer><script src="app.js"></script></body></html>
-ATH_TEMPLATE_4
-cat > "$out/LEVIATH_LICENSE_MIT.txt" <<'ATH_TEMPLATE_5'
+<html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="ATH ist die digitale Einheit im LEVIATH-Prototyp: BeitrÃ¤ge, Guthaben und Ã¼berprÃ¼fbare Buchungen. Technischer Stand, Beispiel und Quellen."><meta name="theme-color" content="#122e32"><title>ATH Â· LEVIATH</title><link rel="stylesheet" href="style.css"></head>
+<body><header class="wrap"><a class="brand" href="#">LEVIATH <span>/ ATH</span></a><nav aria-label="Seitennavigation"><a href="#prinzip">Prinzip</a><a href="#stand">Stand</a><a href="#bash">Bash starten</a><a href="#quellen">Quellen</a><a href="../big-bang/">Lernportal â†—</a></nav></header>
+<main><section class="hero wrap"><p class="eyebrow">LEVIATH Â· Entwicklung vor dem Ã¶ffentlichen Launch</p><h1>Ein Beitrag.<br>Eine Buchung.<br><em>ATH.</em></h1><div class="intro"><p>ATH ist die digitale Einheit in LEVIATH. Das Programm registriert BeitrÃ¤ge, fÃ¼hrt Guthaben und prÃ¼ft signierte Ãœbertragungen.</p><a class="button" href="#beispiel">Einfach ausprobieren â†“</a><p class="small">Der lokale Kern lÃ¤uft. Ein Ã¶ffentliches Netzwerk und reale Auszahlungen sind die nÃ¤chsten eigenen Entwicklungsschritte.</p></div><div class="hero-note">Quellenstand 03.10.2026 <span>Lokale Funktionstests ausgefÃ¼hrt</span></div></section>
+<section id="prinzip" class="light"><div class="wrap"><p class="eyebrow">Das Prinzip</p><h2>LEVIATH fÃ¼hrt das Buch.<br>ATH zÃ¤hlt die Einheiten.</h2><div class="steps"><article><span>01</span><h3>Arbeit registrieren</h3><p>Eine Anleitung, ein Programm oder ein anderes digitales Artefakt erhÃ¤lt einen Inhalts-Hash. Er bindet genau diese Dateifassung.</p></article><article><span>02</span><h3>Beitrag vergÃ¼ten</h3><p>Eine freigegebene Ausgabe verweist auf das registrierte Artefakt. In V0.5 darf sein Hash einmal fÃ¼r eine Ausgabe verwendet werden.</p></article><article><span>03</span><h3>Guthaben Ã¼bertragen</h3><p>Der Sender signiert die Buchung. LEVIATH prÃ¼ft Signatur und Guthaben. V0.5 erhebt dabei keine ProtokollgebÃ¼hr.</p></article></div><p class="footnote">Ein Hash bindet Bytes. Die Bewertung und Berechtigung eines Beitrags benÃ¶tigen eigene Regeln.</p></div></section>
+<section id="beispiel" class="wrap demo"><div><p class="eyebrow">Ein Beispiel zum Verstehen</p><h2>Anna gibt Ben<br>3 ATH.</h2><p>Die Gesamtmenge bleibt gleich. Hier kannst du den Ablauf mit Beispielzahlen ansehen.</p><p class="small">Diese Ansicht rechnet im Browser. Sie erstellt keine Wallet und verbindet sich mit keinem Ledger.</p></div><div class="book"><p class="book-heading">Beispielbuch Â· 10 ATH insgesamt</p><table><caption class="sr-only">Guthaben im Ãœbertragungsbeispiel</caption><thead><tr><th>Person</th><th>Guthaben</th></tr></thead><tbody><tr><td>Anna</td><td id="anna">10 ATH</td></tr><tr><td>Ben</td><td id="ben">0 ATH</td></tr></tbody></table><div class="actions"><button id="transfer" type="button">3 ATH Ã¼bertragen</button><button id="reset" class="secondary" type="button">ZurÃ¼cksetzen</button></div><p id="result" role="status" aria-live="polite">Bereit: Anna hat 10 ATH, Ben hat 0 ATH.</p></div></section>
+<section id="stand" class="light"><div class="wrap"><p class="eyebrow">Heute technisch vorhanden</p><h2>Der Kern arbeitet.<br>Die Verbindung wÃ¤chst noch.</h2><div class="status-grid"><article><h3>V0.5 Â· Guthaben & BeitrÃ¤ge</h3><p>Wallets angelegt, ATH signiert Ã¼bertragen, Zustand neu geladen und State-Root reproduziert. Bootstrap, GrÃ¼nder-Handoff und spÃ¤tere Beitragsausgabe ausgefÃ¼hrt. Einnahmenanteile einschlieÃŸlich RestbetrÃ¤gen exakt gebucht.</p><p class="metric">14 Selbsttests + 9 IntegrationsprÃ¼fungen</p></article><article><h3>V0.3 Â· Lokales Quorum</h3><p>Drei Prozesse mit verschiedenen SchlÃ¼sseln. Ein Block mit drei gÃ¼ltigen Signaturen; nach Stop eines Knotens ein zweiter mit zwei. Die BlÃ¶cke sind hashverkettet.</p><p class="metric">2 von 3 Signaturen reichen</p></article></div><p class="footnote">Die Pakete wurden separat geprÃ¼ft. V0.3 koordiniert BlÃ¶cke Ã¼ber einen Controller; die Knoten signieren Vorschlags-Hashes. Alle drei laufen bisher auf einem Rechner.</p></div></section>
+<section class="wrap economics"><p class="eyebrow">GrÃ¼nderanteil im Bootstrap</p><h2 class="ratio">9 ATH <span>+</span> 1 ATH</h2><p class="large">Neun fÃ¼r das Netzwerk, eine fÃ¼r den GrÃ¼nder.</p><p>Beispiel mit 10 % GrÃ¼nderanteil: Der Sonderanteil wird gekoppelt an tatsÃ¤chliche Netzwerkfreigaben ausgegeben. Mit Ende des Bootstrap-Pools endet dieser Sonderpfad. SpÃ¤tere Beitragsausgaben kÃ¶nnen bestehende prozentuale Anteile verwÃ¤ssern.</p></section>
+<section class="light"><div class="wrap"><p class="eyebrow">NÃ¤chster Entwicklungsstand</p><h2>Ein gemeinsamer Betrieb.</h2><ol class="roadmap"><li><strong>Pakete zusammenfÃ¼hren</strong><span>Guthabenverwaltung und Quorum brauchen ein gemeinsames Regelwerk. V0.3-TestgebÃ¼hren und V0.5-GebÃ¼hrenfreiheit sind unterschiedliche Modelle.</span></li><li><strong>UnabhÃ¤ngige Rechner</strong><span>RegelprÃ¼fung, Zustandsabgleich und Wiederherstellung mÃ¼ssen im Mehrrechnerbetrieb nachgewiesen werden.</span></li><li><strong>Reale Verwendung definieren</strong><span>AusgabeautoritÃ¤t, Bewertung, Rechte und tatsÃ¤chliche Zahlungen erhalten jeweils eigene Vereinbarungen und Integrationen.</span></li></ol><p class="footnote">ATH hat im geprÃ¼ften Stand keinen belegten Marktpreis oder zugesagte EinlÃ¶sbarkeit. Einnahmenbuchungen bewegen kein externes Geld.</p></div></section>
+<section id="bash" class="wrap bash-guide"><p class="eyebrow">Neu Â· das Bash-Experiment</p><h2>Code kopieren.<br>In Git Bash einfÃ¼gen.<br>Enter.</h2><p>Ã–ffne unter Windows das StartmenÃ¼ und suche <strong>Git Bash</strong>. Kopiere den Befehl. Im Terminal: Rechtsklick â†’ Paste/EinfÃ¼gen, dann Enter. Alternativ: Umschalt+EinfÃ¼gen.</p><pre><code>printf 'Hallo ATH!\n'</code></pre><p><a href="ATH_BASH_EXPERIMENT.sh" download="ATH_BASH_EXPERIMENT.sh">Bash-Experiment herunterladen â†“</a></p><p>Speichere die Datei in Downloads. FÃ¼hre dann diese beiden Zeilen in Git Bash aus:</p><pre><code>cd ~/Downloads
+bash ATH_BASH_EXPERIMENT.sh demo</code></pre><p>Der Lauf erzeugt zwei lokale TestschlÃ¼ssel, Ã¼bertrÃ¤gt 3 ATH und prÃ¼ft die Signatur sowie die Hashverkettung. Erwartet: Anna 7 ATH, Ben 3 ATH, Gesamtmenge 10 ATH.</p><p class="small">Dies ist ein eigenes Bash-Lernexperiment mit festem Beispielbestand. Bash fÃ¼hrt Buchungen und Replay aus; OpenSSL Ã¼bernimmt Kryptografie. Beitragsausgabe, GrÃ¼nder-Vesting und Netzbetrieb folgen als eigene Baustufen.</p><div class="source-links"><a href="ATH_BASH_START.md">Anleitung: eigenes Skript in der Konsole schreiben â†—</a><a href="BUILD_ATH_WEBSITE.sh" download="BUILD_ATH_WEBSITE.sh">Webseiten-Generator in Bash herunterladen â†“</a></div></section><section id="quellen" class="wrap sources"><p class="eyebrow">Quellen Â· Lizenz Â· Zuordnung</p><h2>Nachvollziehbar gebaut.</h2><p>Projektkontext: <a href="https://github.com/Juri-Halveth">Juri-Halveth</a> / LEVIATH. Grundlage sind die vier bereitgestellten EntwicklungsstÃ¤nde und die eigenen lokalen Funktionstests vom 03.10.2026. ATH ist die vom Projektverantwortlichen festgelegte Einheitenbezeichnung.</p><div class="source-links"><a href="ATH_EINFACH_ERKLAERT.pptx">PowerPoint: ATH einfach erklÃ¤rt â†—</a><a href="technical-receipt.json">Technisches PrÃ¼freceipt â†—</a><a href="SOURCES.md">Quellen und Abgrenzung â†—</a><a href="LICENSE.txt">Lizenz der Webseite: ISC â†—</a><a href="LEVIATH_LICENSE_MIT.txt">V0.5-Quelllizenz: MIT â†—</a><a href="https://github.com/Juri-Halveth/mein-lernportal/tree/main/ath">Webseiten-Quellcode â†—</a></div><p class="small">Die Webseite erweitert das Lernportal. Die LEVIATH-Quellpakete behalten ihre eigenen Lizenzangaben. Die Projektbezeichnung und die Copyright-Zuordnung der Quellen bleiben erhalten.</p></section></main><footer class="wrap"><span>LEVIATH / ATH Â· Stand 03.10.2026</span><a href="../privacy.html">Datenschutz</a><span>Ohne Tracking Â· ohne Wallet-Verbindung</span></footer><script src="app.js"></script></body></html>
+ATH_TEMPLATE_5
+cat > "$out/LEVIATH_LICENSE_MIT.txt" <<'ATH_TEMPLATE_6'
 MIT License
 
 Copyright (c) 2026 LEVIATH contributors
@@ -174,8 +187,8 @@ copies or substantial portions of the Software.
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-ATH_TEMPLATE_5
-cat > "$out/LICENSE.txt" <<'ATH_TEMPLATE_6'
+ATH_TEMPLATE_6
+cat > "$out/LICENSE.txt" <<'ATH_TEMPLATE_7'
 ISC License
 
 Copyright (c) 2026 Lernstudio contributors
@@ -196,8 +209,8 @@ Scope: original Lernstudio platform code and original published lesson content.
 Files bearing their own SPDX/license notice retain that license. Third-party
 materials retain their notices. This license does not grant trademark,
 personality, voice, likeness, or endorsement rights.
-ATH_TEMPLATE_6
-cat > "$out/SOURCES.md" <<'ATH_TEMPLATE_7'
+ATH_TEMPLATE_7
+cat > "$out/SOURCES.md" <<'ATH_TEMPLATE_8'
 # ATH / LEVIATH: Quellen und Lizenzen
 
 Stand: 03.10.2026. Projektkontext: Juri-Halveth / LEVIATH.
@@ -231,13 +244,13 @@ Die Seite enthält eine Browserrechnung mit Beispielguthaben. Sie hat keine Wall
 
 ## Bash-Experiment
 ATH_BASH_EXPERIMENT.sh ist ein eigenständiges neues Bash-Lernexperiment unter ISC. Ein Prozess, zwei Testschlüssel, feste Beispielmenge. Buchungen, Replay und Hashverkettung werden von Bash orchestriert; OpenSSL übernimmt RSA und sha256sum die Hashfunktion. Dieses Skript ist kein vollständiger V0.5-Port. BUILD_ATH_WEBSITE.sh erzeugt die Textdateien der Website aus Bash-Heredocs. Browser-HTML/CSS/JavaScript bleiben eigene Ausgabetypen.
-ATH_TEMPLATE_7
-cat > "$out/style.css" <<'ATH_TEMPLATE_8'
+ATH_TEMPLATE_8
+cat > "$out/style.css" <<'ATH_TEMPLATE_9'
 :root{--ink:#122e32;--cream:#f4f0e7;--mint:#a5dac8;--line:#385154;--muted:#bad0cb}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:var(--ink);color:var(--cream);font-family:Arial,Helvetica,sans-serif;font-size:18px;line-height:1.65}.wrap{max-width:1240px;margin:auto;padding:0 48px}header{display:flex;align-items:center;justify-content:space-between;min-height:110px;gap:24px}.brand{font-weight:800;letter-spacing:.04em;text-decoration:none}.brand span{color:var(--mint)}nav{display:flex;gap:26px;font-size:14px}a{color:inherit;text-underline-offset:5px}nav a{text-decoration:none}a:hover{color:var(--mint)}a:focus-visible,button:focus-visible{outline:3px solid #dd9b64;outline-offset:6px}.hero{position:relative;padding-top:60px;padding-bottom:75px;display:grid;grid-template-columns:1.2fr 1fr;column-gap:80px}.eyebrow{text-transform:uppercase;font-size:12px;letter-spacing:.17em;font-weight:bold;margin:0 0 26px;color:var(--mint)}.hero>.eyebrow{grid-column:1/-1}h1{font-size:clamp(64px,7.4vw,105px);line-height:1.03;letter-spacing:-.055em;margin:8px 0 30px}h1 em{font-style:normal;color:var(--mint)}.intro{padding-top:18px;font-size:22px}.intro p:first-child{margin-top:0}.button,button{display:inline-block;background:var(--mint);color:var(--ink);padding:15px 22px;border:0;border-radius:0;font:inherit;font-weight:bold;text-decoration:none;cursor:pointer}.button:hover,button:hover{background:#c3eedf;color:var(--ink)}.small{font-size:14px;color:var(--muted)}.hero-note{grid-column:1/-1;border-top:1px solid var(--line);padding-top:24px;margin-top:38px;display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}.light{background:var(--cream);color:var(--ink);padding:80px 0}.light .eyebrow{color:#176a59}h2{font-size:clamp(37px,4.4vw,59px);line-height:1.12;letter-spacing:-.035em;margin:0 0 38px}h3{font-size:24px;line-height:1.3;letter-spacing:-.02em;margin:16px 0}p{max-width:780px}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:60px}.steps article{border-top:1px solid #a9b5aa;padding-top:22px}.steps article>span{font-size:14px;color:#176a59}.steps p,.status-grid p{font-size:17px}.footnote{font-size:14px;max-width:1040px;margin-top:38px;color:#49615c}.demo{padding-top:90px;padding-bottom:90px;display:grid;grid-template-columns:1fr 1fr;gap:70px}.book{border-top:1px solid var(--mint);padding-top:12px}.book-heading{font-size:14px;color:var(--mint)}table{border-collapse:collapse;width:100%;font-size:27px}th,td{text-align:left;padding:16px 0;border-bottom:1px solid var(--line)}th{font-size:13px;font-weight:normal;color:var(--muted)}th:last-child,td:last-child{text-align:right}.actions{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap}button{font-size:15px}.secondary{background:transparent;color:var(--cream);border:1px solid var(--line)}#result{font-size:14px;min-height:48px;color:var(--muted)}.status-grid{display:grid;grid-template-columns:1fr 1fr;gap:65px}.metric{font-weight:bold;color:#176a59}.economics{padding-top:80px;padding-bottom:85px}.ratio{font-size:clamp(52px,7vw,95px);color:var(--mint)}.ratio span{color:#64807a}.large{font-size:27px}.roadmap{list-style:none;padding:0;counter-reset:road}.roadmap li{counter-increment:road;display:grid;grid-template-columns:40px 280px 1fr;gap:20px;padding:24px 0;border-top:1px solid #b5c1b4}.roadmap li:before{content:'0' counter(road);color:#176a59;font-size:14px}.roadmap span{font-size:17px}.sources{padding-top:80px;padding-bottom:75px}.source-links{display:flex;flex-direction:column;align-items:flex-start;gap:14px;margin:35px 0}.source-links a{font-size:17px}.sources>p{max-width:900px}footer{padding-top:26px!important;padding-bottom:30px!important;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:20px;font-size:12px;color:var(--muted)}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}@media(max-width:760px){.wrap{padding-left:24px;padding-right:24px}header{align-items:flex-start;flex-direction:column;justify-content:center;gap:12px;padding-top:24px;padding-bottom:22px}nav{flex-wrap:wrap;gap:13px 20px}.hero{grid-template-columns:1fr;padding-top:35px;gap:10px}.hero>.eyebrow{font-size:10px}h1{font-size:72px}.intro{font-size:20px}.hero-note{flex-direction:column;gap:8px}.light{padding:58px 0}.steps,.demo,.status-grid{grid-template-columns:1fr;gap:28px}.steps{margin-top:35px}.demo{padding-top:60px;padding-bottom:60px}.roadmap li{grid-template-columns:30px 1fr;gap:10px}.roadmap span{grid-column:2}.economics,.sources{padding-top:58px;padding-bottom:58px}footer{flex-direction:column;gap:8px}.ratio{font-size:55px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
 .bash-guide{padding-top:80px;padding-bottom:80px}.bash-guide pre{max-width:850px;overflow-x:auto;background:#091f22;border-left:3px solid var(--mint);padding:24px;font-size:17px;line-height:1.8}.bash-guide code{font-family:Consolas,monospace}.bash-guide>p{max-width:850px}
-ATH_TEMPLATE_8
-cat > "$out/technical-receipt.json" <<'ATH_TEMPLATE_9'
+ATH_TEMPLATE_9
+cat > "$out/technical-receipt.json" <<'ATH_TEMPLATE_10'
 {
   "unit": "ATH",
   "recordedAt": "2026-10-02T23:38:37.9536152Z",
@@ -268,6 +281,6 @@ cat > "$out/technical-receipt.json" <<'ATH_TEMPLATE_9'
   "scope": "Local functional integration; separate corrected packages",
   "testNodesStopped": true
 }
-ATH_TEMPLATE_9
+ATH_TEMPLATE_10
 cp -- "${BASH_SOURCE[0]}" "$out/BUILD_ATH_WEBSITE.sh"
 printf "ATH-Webseitentexte gebaut: %s\nPowerPoint bei Bedarf separat daneben speichern.\n" "$out"

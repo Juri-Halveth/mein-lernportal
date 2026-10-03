@@ -50,8 +50,17 @@ replay(){
  done < "$root/ledger.tsv"
  ((expected>=1 && anna+ben==100000)) || die 'Beispielmenge stimmt nicht'
 }
+parse_ath(){
+ local value=${1:-}
+ [[ $value =~ ^(0|[1-9][0-9]{0,4})([.,]([0-9]{1,4}))?$ ]] || die 'ATH-Betrag erwartet, z.B. 1, 2 oder 0.0001; maximal vier Nachkommastellen'
+ local whole=${BASH_REMATCH[1]} fraction=${BASH_REMATCH[3]:-}
+ fraction="${fraction}0000"; fraction=${fraction:0:4}
+ local amount=$((10#$whole*10000+10#$fraction))
+ ((amount>0)) || die 'Betrag muss größer als null sein'
+ printf '%d' "$amount"
+}
 transfer(){
- local amount=${1:-30000}; [[ $amount =~ ^[1-9][0-9]{0,8}$ ]] || die 'Betrag in positiven ganzzahligen Untereinheiten angeben'
+ local amount; amount=$(parse_ath "${1:-}")
  replay; ((amount<=anna)) || die 'Unzureichendes Guthaben'
  local signed="$expected|$last|TRANSFER|ANNA|BEN|$amount"
  local sig; sig=$(printf '%s' "$signed" | openssl dgst -sha256 -sign "$root/keys/ANNA.private.pem" | openssl base64 -A)
@@ -62,15 +71,15 @@ transfer(){
 status(){ replay; printf 'ANNA: '; quantity "$anna"; printf '\nBEN:  '; quantity "$ben"; printf '\nTOTAL: '; quantity "$((anna+ben))"; printf '\nRECORDS: %d\nCHAIN HEAD: %s\n' "$expected" "$last"; }
 case "$command" in
  init) init;;
- transfer) transfer "${2:-30000}";;
+ transfer) transfer "${2:-}";;
  verify) replay; printf 'PASS: Hashverkettung, Signaturen, Reihenfolge und Beispielmenge.\n';;
  status) status;;
  demo)
   if [[ -z ${ATH_ROOT:-} ]]; then root=$(mktemp -d "${TMPDIR:-/tmp}/ath-bash.XXXXXXXX")/ledger; fi
-  init; transfer 30000; status
+  init; transfer 3; status
   printf 'DEMO PASS. Datenverzeichnis: %s\n' "$root"
   printf 'Scope: ein Prozess, zwei lokale Schlüssel, feste Beispielmenge; keine Gleichwertigkeit mit V0.5.\n';;
  help|--help|-h)
-  printf 'ATH Bash Experiment\n  bash ATH_BASH_EXPERIMENT.sh demo\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh init\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh transfer 30000\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh status\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh verify\n\n30000 Untereinheiten = 3.0000 ATH. Ben kann in diesem ersten Experiment nur empfangen.\nKein Netzwerk, Mint-/Vesting-Modell, paralleler Writer oder Crash-Recovery.\n';;
+  printf 'ATH Bash Experiment\n  bash ATH_BASH_EXPERIMENT.sh demo\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh init\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh transfer 3\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh status\n  ATH_ROOT="./mein-neues-ledger" bash ATH_BASH_EXPERIMENT.sh verify\n\nEingabe in ATH: 1 = 1 ATH, 2 = 2 ATH, 0.0001 = eine Untereinheit. Punkt oder Komma; maximal vier Nachkommastellen. Ben kann in diesem ersten Experiment nur empfangen.\nKein Netzwerk, Mint-/Vesting-Modell, paralleler Writer oder Crash-Recovery.\n';;
  *) die 'Unbekannter Befehl. Nutze help.';;
 esac

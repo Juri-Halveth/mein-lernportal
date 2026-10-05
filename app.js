@@ -425,13 +425,13 @@
       let count = 0;
       for (const tr of tracks) {
         const p = trackProgress(tr);
-        const match = !query || (tr.name + " " + tr.subtitle).toLocaleLowerCase("de").includes(query);
+        const match = !query || [tr.name,tr.subtitle,rubrikGruppen().find(g => g.tracks.some(track => track.id === tr.id))?.name || ''].map(value => window.HalvethHubLanguage?.searchable(value) || value).join(' ').toLocaleLowerCase("de").includes(query);
         if (match) {
           const card = el(`<article class="world-card"><span class="world-icon" style="--world-color:${tr.color}" aria-hidden="true">${tr.icon}</span><h3>${esc(tr.name)}</h3><p>${esc(tr.subtitle)}</p><div class="world-progress"><progress value="${p.done}" max="${p.total || 1}" aria-label="Fortschritt ${esc(tr.name)}"></progress><small>${p.done} / ${p.total} Lektionen</small></div><button class="world-open" type="button">Lernpfad öffnen <span aria-hidden="true">↗</span><span class="sr-only">: ${esc(tr.name)}</span></button></article>`);
           card.querySelector("button").addEventListener("click", () => go("roadmap", tr.id)); results.appendChild(card); count++;
         } else {
           for (const item of allLessons(tr)) {
-            if (!item.lesson.title.toLocaleLowerCase("de").includes(query)) continue;
+            if (!(window.HalvethHubLanguage?.searchable(item.lesson.title) || item.lesson.title).toLocaleLowerCase("de").includes(query)) continue;
             const card = el(`<article class="world-card lesson-result"><small>${esc(tr.name)}</small><h3>${esc(item.lesson.title)}</h3><p>${isDone(item.lesson.id) ? "Bereits abgeschlossen" : "Bereit zum Entdecken"}</p><button class="world-open" type="button">Lektion öffnen ↗</button></article>`);
             card.querySelector("button").addEventListener("click", () => go("lesson", item.lesson.id)); results.appendChild(card); count++;
           }
@@ -2862,7 +2862,7 @@ document.getElementById("go").addEventListener("click", function(){
 
       // Spickzettel
       REF.cheatsheets.forEach(cs => {
-        const rows = cs.rows.filter(r => !q || r.code.toLowerCase().includes(q) || r.desc.toLowerCase().includes(q) || cs.title.toLowerCase().includes(q));
+        const rows = cs.rows.filter(r => !q || r.code.toLowerCase().includes(q) || (window.HalvethHubLanguage?.searchable(r.desc) || r.desc).toLowerCase().includes(q) || (window.HalvethHubLanguage?.searchable(cs.title) || cs.title).toLowerCase().includes(q));
         if (!rows.length) return;
         const card = el(`<div class="cheat"><div class="cheat-head"><span class="cheat-ico" style="background:${cs.color}">${cs.icon}</span><b>${esc(cs.title)}</b></div><table class="cheat-table"></table></div>`);
         const tbl = card.querySelector("table");
@@ -2871,7 +2871,7 @@ document.getElementById("go").addEventListener("click", function(){
       });
 
       // Glossar
-      const terms = REF.glossary.filter(g => !q || g.term.toLowerCase().includes(q) || g.def.toLowerCase().includes(q));
+      const terms = REF.glossary.filter(g => !q || (window.HalvethHubLanguage?.searchable(g.term) || g.term).toLowerCase().includes(q) || (window.HalvethHubLanguage?.searchable(g.def) || g.def).toLowerCase().includes(q));
       if (terms.length) {
         const gwrap = el(`<div class="glossary"><h3 style="margin:6px 0 10px">Glossar${q ? " (Treffer: " + terms.length + ")" : ""}</h3></div>`);
         terms.forEach(g => gwrap.appendChild(el(`<div class="gitem"><b>${esc(g.term)}</b><span>${esc(g.def)}</span></div>`)));

@@ -5,7 +5,7 @@
   "description": "702 freie Lektionen ohne Konto, Paywall oder Werbung",
   "scripts": {
     "serve": "node tools/serve.cjs",
-    "test": "node tests/portal.test.cjs"
+    "test": "node tests/portal.test.cjs && node --test tests/hub-languages.test.cjs"
   },
   "license": "ISC",
   "devDependencies": {

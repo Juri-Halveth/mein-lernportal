@@ -34,10 +34,14 @@ for(const language of ['de','en','ru'])test(language+' lesson search retains cur
   const retained=w.document.createElement('input');retained.value='Mein eigener Text / 42';w.document.body.append(retained);
   const count=w.document.createElement('p');count.textContent='13 Lernpfade · 702 Lektionen';w.document.body.append(count);
   const label=w.document.createElement('p');label.textContent='🧠 Logik & Mathe · Suchen. · Lernen.';w.document.body.append(label);
+  const access=w.document.createElement('p');access.textContent='FREI · OHNE KONTO · OHNE WERBUNG';w.document.body.append(access);
   await new Promise(resolve=>setTimeout(resolve,10));
   assert.equal(pre.textContent,'Lernpfad öffnen');assert.equal(retained.value,'Mein eigener Text / 42');
   assert.deepEqual(count.textContent.match(/[0-9]+/g),['13','702']);
+  assert.match(count.textContent,/ · /,'The lesson-count separator stays punctuation');
   if(language!=='de')assert(!/Lernpfade|Lektionen/.test(count.textContent),'Dynamic counters are localized');
+  assert.match(label.textContent,/ · /,'The heading separators stay punctuation');
+  if(language==='de')assert.equal(access.textContent,'FREI · OHNE KONTO · OHNE WERBUNG','Access status must retain its German wording');
   if(language!=='de')assert(!/Logik|Suchen|Lernen/.test(label.textContent),'Decorated and punctuated labels are localized');
   assert.equal(errors.length,0,errors.join('\n'));assert.equal(network.length,0);
  }finally{w.dispatchEvent(new w.Event('pagehide'));dom.window.close();}

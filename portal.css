@@ -153,3 +153,5 @@ header.app.universe-header{
 @keyframes portal-orbit{to{transform:rotate(342deg) scaleY(.46)}}
 @keyframes portal-orbit-reverse{to{transform:rotate(-333deg) scaleY(.64)}}
 @keyframes portal-pulse{50%{opacity:.25;transform:scale(.7)}}
+.learning-links{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:6px 22px;padding:12px 20px;text-align:center}
+.learning-links a{max-width:100%;overflow-wrap:anywhere}

@@ -1,6 +1,6 @@
 [Original / Deutsch](README.md) · [English](README.en.md) · [Русский](README.ru.md)
 
-# Mein Lernportal
+# Mein Lernportal – 702 урока для начала обучения
 
 **Краткий путеводитель по проекту · EN / RU**
 

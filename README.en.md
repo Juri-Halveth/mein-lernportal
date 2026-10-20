@@ -1,6 +1,6 @@
 [Original / Deutsch](README.md) · [English](README.en.md) · [Русский](README.ru.md)
 
-# Mein Lernportal
+# Mein Lernportal – 702 lessons to get started
 
 **Concise project guide · EN / RU**
 

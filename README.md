@@ -35,6 +35,8 @@ npm run serve
 
 Danach: <http://127.0.0.1:4175/>
 
+Die lokale Vorschau bindet ausschließlich Loopback und liefert eine ausdrückliche Liste öffentlicher Dateien. Git-Metadaten, Abhängigkeiten, Werkzeuge und neue private Dateien werden nicht ausgeliefert; fehlerhafte URL-Kodierungen erhalten eine Fehlerantwort.
+
 ## Prüfen
 
 ```powershell

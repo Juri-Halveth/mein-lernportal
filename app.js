@@ -899,7 +899,7 @@
         catch (e) { output = "Fehler beim Laden der Python-Umgebung: " + e.message + "\n(Prüfe deine Internetverbindung, Python wird einmalig geladen.)"; }
         showOutput("text", output);
       }
-      if (current.view !== "lesson" || current.arg !== lesson.id) return; // während (Python-)Lauf weggeklickt → nichts anwenden
+      if (!document.body.contains(box) || current.view !== "lesson" || current.arg !== lesson.id) return; // eine alte Ausführung darf keinen neu geöffneten Lernschritt verändern
       if (evaluate(task, code, output)) {
         verdictShow(true, "<b>Das funktioniert.</b> Die Ausgabe zeigt die gesuchte Wirkung.");
         markDone(lesson.id, true); refreshSidebarChecks(lesson.id); refreshHeaderRing();
@@ -1776,6 +1776,7 @@ document.getElementById("go").addEventListener("click", function(){
     };
 
     function finish() {
+      window.PortalCodeRunner?.stop();
       zeigtErgebnis = true;
       markDone(lesson.id, true); refreshSidebarChecks(lesson.id); refreshHeaderRing();
       [...prog.children].forEach(s => s.className = "seg done");
@@ -1797,6 +1798,7 @@ document.getElementById("go").addEventListener("click", function(){
     }
 
     function renderBeat() {
+      window.PortalCodeRunner?.stop();
       zeigtErgebnis = false;
       weiter.onclick = vorwaerts;
       markSeg();
@@ -2097,6 +2099,7 @@ document.getElementById("go").addEventListener("click", function(){
         reveal.innerHTML = `<div class="beat-rev" style="opacity:.7">Führe den Code wirklich aus …</div>`;
         let output = "";
         try { output = b.lang === "python" ? await runPython(b.code) : await runJS(b.code); } catch (e) { output = String((e && e.message) || e); }
+        if (!document.body.contains(c)) return;
         const truth = normVerify(output) !== normVerify(b.erwartet == null ? "" : b.erwartet) ? "bug" : "ok";
         const betRichtig = bet === truth;
         const hatZeile = !!(b.bug && b.bug.zeile != null);
@@ -2147,6 +2150,7 @@ document.getElementById("go").addEventListener("click", function(){
           const prog = `import dis\ndis.dis(compile(${JSON.stringify(b.code)}, "<studio>", "exec"))`;
           bc = await runPython(prog);
         } catch (e) { bc = String((e && e.message) || e); }
+        if (!document.body.contains(c)) return;
         out.innerHTML =
           '<div style="border:1px solid var(--line,#262730);border-radius:12px;overflow:hidden;background:var(--panel,#141518)">' +
             '<div style="padding:8px 12px;font-size:12.5px;color:var(--accent,#ffd60a);border-bottom:1px solid var(--line,#262730);background:var(--panel-2,#1b1c21)">⚙️ Der echte Bytecode, den die Maschine Schritt für Schritt abarbeitet:</div>' +

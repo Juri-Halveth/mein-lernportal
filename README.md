@@ -22,6 +22,8 @@ Ein frei zugänglicher Lernkatalog mit Lektionen und Übungen. Öffne die Websit
 - interaktive Übungen, Quizze, Codeaufgaben und Visualisierungen
 - responsive Oberfläche, Hell-/Dunkelmodus und reduzierte Bewegung
 
+JavaScript- und Python-Übungen laufen in einem kurzlebigen Worker innerhalb eines getrennten Iframes mit undurchsichtiger Herkunft. Die Laufzeit besitzt keinen Zugriff auf das Dokument oder den lokalen Speicher des Portals. Ein Lauf endet spätestens acht Sekunden nach dem Laden; ein Seitenwechsel beendet ihn ebenfalls. Jede Ausführung startet neu.
+
 Der Lernstand wird nur im Browser gespeichert. Python-Aufgaben laden Pyodide 0.26.2 erst beim Start einer solchen Aufgabe von jsDelivr; der normale Portalstart verwendet ausschließlich Dateien dieses Repositorys.
 
 ## Lokal öffnen

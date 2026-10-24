@@ -335,6 +335,7 @@
 
 
   function render() {
+    window.PortalCodeRunner?.stop();
     applyTheme();
     setMobileNav(false);
     const root = document.getElementById("app");
@@ -3113,62 +3114,13 @@ document.getElementById("go").addEventListener("click", function(){
     for (const pair of map) if (pair[0].test(t)) return pair[1];
     return "";
   }
-  async function runJS(code) {
-    const logs = [];
-    const fakeConsole = {
-      log: (...a) => logs.push(a.map(fmt).join(" ")),
-      error: (...a) => logs.push(a.map(fmt).join(" ")),
-      warn: (...a) => logs.push(a.map(fmt).join(" ")),
-      info: (...a) => logs.push(a.map(fmt).join(" "))
-    };
-    try {
-      new Function("console", '"use strict";\n' + code)(fakeConsole);
-      // Asynchrone Ausgaben (setTimeout, Promises, async/await) noch einsammeln.
-      // Jeder setTimeout(0) hier wird NACH den Timern/Microtasks des Nutzercodes
-      // ausgeführt und leert so die Warteschlangen. Echte lange Timer (z. B. 1000ms)
-      // werden bewusst nicht abgewartet.
-      for (let i = 0; i < 4; i++) { await new Promise(r => setTimeout(r, 0)); }
-    }
-    catch (e) {
-      logs.push("⚠ Fehler: " + e.message);
-      const h = friendlyHint(e.message); if (h) logs.push("💡 " + h);
-    }
-    return logs.join("\n");
+  async function runIsolated(language, code) {
+    const result = await window.PortalCodeRunner.run(language, code);
+    const hint = result.ok ? "" : friendlyHint(result.output);
+    return result.output + (hint ? "\n💡 " + hint : "");
   }
-
-  let pyodidePromise = null;
-  function loadScript(src) {
-    return new Promise((res, rej) => {
-      const s = document.createElement("script");
-      s.src = src; s.onload = res; s.onerror = () => rej(new Error("Skript nicht ladbar: " + src));
-      document.head.appendChild(s);
-    });
-  }
-  function ensurePyodide() {
-    if (!pyodidePromise) {
-      pyodidePromise = (async () => {
-        const base = "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/";
-        await loadScript(base + "pyodide.js");
-        return await loadPyodide({ indexURL: base });
-      })().catch(err => { pyodidePromise = null; throw err; });
-    }
-    return pyodidePromise;
-  }
-  async function runPython(code) {
-    const py = await ensurePyodide();
-    let buf = "";
-    try {
-      py.setStdout({ batched: (s) => { buf += s + "\n"; } });
-      py.setStderr({ batched: (s) => { buf += s + "\n"; } });
-    } catch (e) {}
-    try { await py.runPythonAsync(code); }
-    catch (e) {
-      const raw = e.message ? e.message.split("\n").slice(-3).join("\n") : String(e);
-      buf += "⚠ Fehler: " + raw;
-      const h = friendlyHint(raw); if (h) buf += "\n💡 " + h;
-    }
-    return buf.replace(/\n+$/, "");
-  }
+  async function runJS(code) { return runIsolated("js", code); }
+  async function runPython(code) { return runIsolated("python", code); }
 
   /* ---- SHA-256 (für Flaggen-Prüfung; Browser-Krypto + JS-Fallback) ---- */
   async function sha256hex(str) {

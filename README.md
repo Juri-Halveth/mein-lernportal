@@ -2,15 +2,11 @@
 [Original / Deutsch](README.md) · [English](README.en.md) · [Русский](README.ru.md)
 <!-- /HUB_LANGUAGES_V1 -->
 
-# Mein Lernportal
+# Mein Lernportal – 702 Lektionen zum direkten Loslernen
 
-<!-- HALVETH_WORK_CERTIFICATES_V1_1 -->
-## Juri Janovski / Juri Halveth – Privates HALVETH-Werkzertifikat
+Ein frei zugänglicher Lernkatalog mit Lektionen und Übungen. Öffne die Website, suche dein Thema und beginne ohne Pflichtkonto.
 
-[Privates HALVETH-Werkzertifikat: Dokumentiertes Lernportal, Inhaltsverträge und Pages-Deployment – Mein Lernportal](https://juri-halveth.github.io/werkzertifikate/#werk-mein-lernportal).
-
-HALVETH VERACHEL STUDIOS · Quellstand, dokumentierte Ergebnisse und SHA-256-Belege stehen im Werkzertifikat. Private, mit Codex erstellte Werkdokumentation; keine ISTQB- oder sonstige Personenzertifizierung.
-<!-- /HALVETH_WORK_CERTIFICATES_V1_1 -->
+[**Projekt öffnen →**](https://juri-halveth.github.io/mein-lernportal/) · [Arbeitsproben](https://juri-halveth.github.io/koennen/) · [Portfolio](https://juri-halveth.github.io/)
 
 
 **Öffnen. Suchen. Lernen.**
@@ -26,6 +22,8 @@ HALVETH VERACHEL STUDIOS · Quellstand, dokumentierte Ergebnisse und SHA-256-Bel
 - interaktive Übungen, Quizze, Codeaufgaben und Visualisierungen
 - responsive Oberfläche, Hell-/Dunkelmodus und reduzierte Bewegung
 
+JavaScript- und Python-Übungen laufen in einem kurzlebigen Worker innerhalb eines getrennten Iframes mit undurchsichtiger Herkunft. Die Laufzeit besitzt keinen Zugriff auf das Dokument oder den lokalen Speicher des Portals. Ein Lauf endet spätestens acht Sekunden nach dem Laden; ein Seitenwechsel beendet ihn ebenfalls. Jede Ausführung startet neu.
+
 Der Lernstand wird nur im Browser gespeichert. Python-Aufgaben laden Pyodide 0.26.2 erst beim Start einer solchen Aufgabe von jsDelivr; der normale Portalstart verwendet ausschließlich Dateien dieses Repositorys.
 
 ## Lokal öffnen
@@ -36,6 +34,8 @@ npm run serve
 ```
 
 Danach: <http://127.0.0.1:4175/>
+
+Die lokale Vorschau bindet ausschließlich Loopback und liefert eine ausdrückliche Liste öffentlicher Dateien. Git-Metadaten, Abhängigkeiten, Werkzeuge und neue private Dateien werden nicht ausgeliefert; fehlerhafte URL-Kodierungen erhalten eine Fehlerantwort.
 
 ## Prüfen
 

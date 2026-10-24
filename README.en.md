@@ -1,6 +1,6 @@
 [Original / Deutsch](README.md) · [English](README.en.md) · [Русский](README.ru.md)
 
-# Mein Lernportal
+# Mein Lernportal – 702 lessons to get started
 
 **Concise project guide · EN / RU**
 
@@ -19,6 +19,5 @@ This manually edited guide summarizes the audited source. The original technical
 
 ## Rights and scope
 
-HALVETH work certificates mentioned in the original are private project documentation, not institutional personal qualifications or an ISTQB certification.
 
 Use the original rights and licence notices for the relevant files and versions. This guide grants no additional licence.

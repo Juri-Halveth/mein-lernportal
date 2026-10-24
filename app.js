@@ -335,6 +335,7 @@
 
 
   function render() {
+    window.PortalCodeRunner?.stop();
     applyTheme();
     setMobileNav(false);
     const root = document.getElementById("app");
@@ -898,7 +899,7 @@
         catch (e) { output = "Fehler beim Laden der Python-Umgebung: " + e.message + "\n(Prüfe deine Internetverbindung, Python wird einmalig geladen.)"; }
         showOutput("text", output);
       }
-      if (current.view !== "lesson" || current.arg !== lesson.id) return; // während (Python-)Lauf weggeklickt → nichts anwenden
+      if (!document.body.contains(box) || current.view !== "lesson" || current.arg !== lesson.id) return; // eine alte Ausführung darf keinen neu geöffneten Lernschritt verändern
       if (evaluate(task, code, output)) {
         verdictShow(true, "<b>Das funktioniert.</b> Die Ausgabe zeigt die gesuchte Wirkung.");
         markDone(lesson.id, true); refreshSidebarChecks(lesson.id); refreshHeaderRing();
@@ -1775,6 +1776,7 @@ document.getElementById("go").addEventListener("click", function(){
     };
 
     function finish() {
+      window.PortalCodeRunner?.stop();
       zeigtErgebnis = true;
       markDone(lesson.id, true); refreshSidebarChecks(lesson.id); refreshHeaderRing();
       [...prog.children].forEach(s => s.className = "seg done");
@@ -1796,6 +1798,7 @@ document.getElementById("go").addEventListener("click", function(){
     }
 
     function renderBeat() {
+      window.PortalCodeRunner?.stop();
       zeigtErgebnis = false;
       weiter.onclick = vorwaerts;
       markSeg();
@@ -2096,6 +2099,7 @@ document.getElementById("go").addEventListener("click", function(){
         reveal.innerHTML = `<div class="beat-rev" style="opacity:.7">Führe den Code wirklich aus …</div>`;
         let output = "";
         try { output = b.lang === "python" ? await runPython(b.code) : await runJS(b.code); } catch (e) { output = String((e && e.message) || e); }
+        if (!document.body.contains(c)) return;
         const truth = normVerify(output) !== normVerify(b.erwartet == null ? "" : b.erwartet) ? "bug" : "ok";
         const betRichtig = bet === truth;
         const hatZeile = !!(b.bug && b.bug.zeile != null);
@@ -2146,6 +2150,7 @@ document.getElementById("go").addEventListener("click", function(){
           const prog = `import dis\ndis.dis(compile(${JSON.stringify(b.code)}, "<studio>", "exec"))`;
           bc = await runPython(prog);
         } catch (e) { bc = String((e && e.message) || e); }
+        if (!document.body.contains(c)) return;
         out.innerHTML =
           '<div style="border:1px solid var(--line,#262730);border-radius:12px;overflow:hidden;background:var(--panel,#141518)">' +
             '<div style="padding:8px 12px;font-size:12.5px;color:var(--accent,#ffd60a);border-bottom:1px solid var(--line,#262730);background:var(--panel-2,#1b1c21)">⚙️ Der echte Bytecode, den die Maschine Schritt für Schritt abarbeitet:</div>' +
@@ -3113,62 +3118,13 @@ document.getElementById("go").addEventListener("click", function(){
     for (const pair of map) if (pair[0].test(t)) return pair[1];
     return "";
   }
-  async function runJS(code) {
-    const logs = [];
-    const fakeConsole = {
-      log: (...a) => logs.push(a.map(fmt).join(" ")),
-      error: (...a) => logs.push(a.map(fmt).join(" ")),
-      warn: (...a) => logs.push(a.map(fmt).join(" ")),
-      info: (...a) => logs.push(a.map(fmt).join(" "))
-    };
-    try {
-      new Function("console", '"use strict";\n' + code)(fakeConsole);
-      // Asynchrone Ausgaben (setTimeout, Promises, async/await) noch einsammeln.
-      // Jeder setTimeout(0) hier wird NACH den Timern/Microtasks des Nutzercodes
-      // ausgeführt und leert so die Warteschlangen. Echte lange Timer (z. B. 1000ms)
-      // werden bewusst nicht abgewartet.
-      for (let i = 0; i < 4; i++) { await new Promise(r => setTimeout(r, 0)); }
-    }
-    catch (e) {
-      logs.push("⚠ Fehler: " + e.message);
-      const h = friendlyHint(e.message); if (h) logs.push("💡 " + h);
-    }
-    return logs.join("\n");
+  async function runIsolated(language, code) {
+    const result = await window.PortalCodeRunner.run(language, code);
+    const hint = result.ok ? "" : friendlyHint(result.output);
+    return result.output + (hint ? "\n💡 " + hint : "");
   }
-
-  let pyodidePromise = null;
-  function loadScript(src) {
-    return new Promise((res, rej) => {
-      const s = document.createElement("script");
-      s.src = src; s.onload = res; s.onerror = () => rej(new Error("Skript nicht ladbar: " + src));
-      document.head.appendChild(s);
-    });
-  }
-  function ensurePyodide() {
-    if (!pyodidePromise) {
-      pyodidePromise = (async () => {
-        const base = "https://cdn.jsdelivr.net/pyodide/v0.26.2/full/";
-        await loadScript(base + "pyodide.js");
-        return await loadPyodide({ indexURL: base });
-      })().catch(err => { pyodidePromise = null; throw err; });
-    }
-    return pyodidePromise;
-  }
-  async function runPython(code) {
-    const py = await ensurePyodide();
-    let buf = "";
-    try {
-      py.setStdout({ batched: (s) => { buf += s + "\n"; } });
-      py.setStderr({ batched: (s) => { buf += s + "\n"; } });
-    } catch (e) {}
-    try { await py.runPythonAsync(code); }
-    catch (e) {
-      const raw = e.message ? e.message.split("\n").slice(-3).join("\n") : String(e);
-      buf += "⚠ Fehler: " + raw;
-      const h = friendlyHint(raw); if (h) buf += "\n💡 " + h;
-    }
-    return buf.replace(/\n+$/, "");
-  }
+  async function runJS(code) { return runIsolated("js", code); }
+  async function runPython(code) { return runIsolated("python", code); }
 
   /* ---- SHA-256 (für Flaggen-Prüfung; Browser-Krypto + JS-Fallback) ---- */
   async function sha256hex(str) {

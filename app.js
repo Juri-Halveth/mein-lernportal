@@ -564,17 +564,7 @@
   function installLessonTitleIntro(wrap, title) {
     if (!wrap || !title) return;
     title.classList.add("lesson-focus-title");
-    title.setAttribute("data-title-state", "intro");
-    let ausgeblendet = false;
-    wrap.addEventListener("click", (event) => {
-      if (ausgeblendet) return;
-      const action = event.target && event.target.closest ? event.target.closest("button") : null;
-      if (!action || action.matches(".lesson-reader-back,.beat-zurueck")) return;
-      ausgeblendet = true;
-      title.hidden = true;
-      title.setAttribute("aria-hidden", "true");
-      title.setAttribute("data-title-state", "done");
-    });
+    title.setAttribute("data-title-state", "persistent");
   }
 
   function renderLesson(main, lessonId) {
@@ -596,7 +586,7 @@
 
     const wrap = el(`<div class="lesson lesson-focus-layout"></div>`);
     const glyph = lesson.type === "quiz" ? "📝 " : (lesson.task && lesson.task.kind === "flag" ? "🚩 " : "");
-    const lessonTitle = el(`<h2>${glyph}${esc(lesson.title)}</h2>`);
+    const lessonTitle = el(`<h1>${glyph}${esc(lesson.title)}</h1>`);
     wrap.appendChild(lessonTitle);
     installLessonTitleIntro(wrap, lessonTitle);
 
@@ -1707,7 +1697,7 @@ document.getElementById("go").addEventListener("click", function(){
     main.appendChild(crumb);
 
     const wrap = el(`<div class="lesson beatlesson lesson-focus-layout"></div>`);
-    const lessonTitle = el(`<h2>${esc(lesson.title)}</h2>`);
+    const lessonTitle = el(`<h1>${esc(lesson.title)}</h1>`);
     wrap.appendChild(lessonTitle);
     installLessonTitleIntro(wrap, lessonTitle);
     const prog = el(`<div class="beat-prog" hidden aria-hidden="true"></div>`);

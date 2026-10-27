@@ -29,7 +29,7 @@ Der Lernstand wird nur im Browser gespeichert. Python-Aufgaben laden Pyodide 0.2
 ## Lokal öffnen
 
 ```powershell
-npm install
+npm ci --ignore-scripts
 npm run serve
 ```
 
@@ -53,12 +53,13 @@ Die Plattform wurde aus dem geprüften, kontofreien Lernstudio-Stand `8f171e7` a
 
 Originaler Plattformcode und veröffentlichte Originallektionen stehen unter der [ISC-Lizenz](LICENSE.txt). Separat lizenzierte Bestandteile sind in [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt) aufgeführt.
 
-## BASH BIG BANG
+## Getrennte Erweiterungen
 
-[Live öffnen](https://juri-halveth.github.io/mein-lernportal/big-bang/) · 702 Originallektionen aus demselben Curriculum, 75 ausführbare Bash-/Git-Beispiele, 13 Themenbrücken und neun fachliche Perspektiven.
+Das [Bash-/Git-Labor und weitere Experimente](EXPERIMENTS.md) haben eine eigene
+Übersicht. Der Einstieg dieses Repositorys bleibt der direkte Lernkatalog.
 
-Keine zweite Curriculum-Kopie: Die Website lädt ../curriculum.js direkt. Ein Push auf main aktualisiert die bestehende GitHub-Pages-Seite. Die Actions-Prüfung führt die 75 festen Bash-/Git-Beispiele in je einem isolierten temporären Verzeichnis auf Ubuntu aus und vergleicht stdout. Fremde Plattformen werden verlinkt; private Quelldokumente sind nicht enthalten. Die Textansicht ergänzt das Originalportal, dessen interaktive Aufgaben erhalten bleiben.
+## Zusammenarbeit
 
-Räumliche Gestaltung: HTML/CSS/SVG zuerst, Three.js/WebGL und optional WebXR als nächste Ausbaustufe. Physische Materialisierung bleibt ein eigener Hardware- und Messauftrag.
-
-[Sprachenvergleich und Liveübungen](https://juri-halveth.github.io/mein-lernportal/big-bang/canonical.html): fünf kanonische Handlungen, mehrere Programmiersprachen, echte Browserübungen und JSON-Lernjournal im Arbeitsspeicher.
+Rückmeldungen zu einer konkreten Lektion sind in den
+[Issues](https://github.com/Juri-Halveth/mein-lernportal/issues) willkommen.
+Zusammenarbeit: [juri@halveth.de](mailto:juri@halveth.de).

@@ -5,7 +5,7 @@ module.exports = Object.freeze([
   'plotter.js', 'reference.js', 'portal.css', 'styles.css', 'universe.css',
   'apple-touch-icon.png', 'favicon-32.png', 'favicon-48.png', 'favicon.ico',
   'icon-192.png', 'icon-512.png', 'manifest.webmanifest', 'social-share.png',
-  'social-share.svg', 'robots.txt', 'sitemap.xml', 'LICENSE.txt', 'THIRD_PARTY_NOTICES.txt',
+  'social-share.svg', 'HALVETH_NETZ_HERO.svg', 'robots.txt', 'sitemap.xml', 'LICENSE.txt', 'THIRD_PARTY_NOTICES.txt',
   'languages/catalog.js', 'languages/catalog.json', 'languages/hub-language.css', 'languages/hub-language.js',
   'big-bang/index.html', 'big-bang/canonical.html', 'big-bang/app.js',
   'big-bang/big-bang.css', 'big-bang/catalog.json',

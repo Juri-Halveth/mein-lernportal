@@ -4,6 +4,10 @@
 
 # Mein Lernportal – 702 Lektionen zum direkten Loslernen
 
+![HALVETH / NETZ – Mein Lernportal: Themenraster mit markiertem Lernpfad](HALVETH_NETZ_HERO.svg)
+
+**HALVETH / NETZ · Lernen.** [Starship Lab öffnen](https://juri-halveth.github.io/universum/) und dort die Projektkarte „LERNPORTAL“ auswählen.
+
 Ein frei zugänglicher Lernkatalog mit Lektionen und Übungen. Öffne die Website, suche dein Thema und beginne ohne Pflichtkonto.
 
 [**Projekt öffnen →**](https://juri-halveth.github.io/mein-lernportal/) · [Arbeitsproben](https://juri-halveth.github.io/koennen/) · [Portfolio](https://juri-halveth.github.io/)

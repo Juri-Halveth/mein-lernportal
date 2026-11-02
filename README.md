@@ -4,18 +4,13 @@
 
 # Mein Lernportal – 702 Lektionen zum direkten Loslernen
 
-![HALVETH / NETZ – Mein Lernportal: Themenraster mit markiertem Lernpfad](HALVETH_NETZ_HERO.svg)
+**Öffnen. Suchen. Lernen.** Der freie, statische Katalog enthält 702 Lektionen in 13 Themenwelten. Lektionen, Suche und Übungen sind ohne Pflichtkonto direkt zugänglich; der Fortschritt liegt im Browser und kann exportiert oder importiert werden.
 
-**HALVETH / NETZ · Lernen.** [Starship Lab öffnen](https://juri-halveth.github.io/universum/) und dort die Projektkarte „LERNPORTAL“ auswählen.
+[**Lektionen direkt öffnen**](https://juri-halveth.github.io/mein-lernportal/) · [Bash-/Git-Labor](https://juri-halveth.github.io/mein-lernportal/big-bang/) · [Quellcode](https://github.com/Juri-Halveth/mein-lernportal/tree/main)
 
-Ein frei zugänglicher Lernkatalog mit Lektionen und Übungen. Öffne die Website, suche dein Thema und beginne ohne Pflichtkonto.
+![Mein Lernportal: Themenraster mit markiertem Lernpfad](HALVETH_NETZ_HERO.svg)
 
-[**Projekt öffnen →**](https://juri-halveth.github.io/mein-lernportal/) · [Arbeitsproben](https://juri-halveth.github.io/koennen/) · [Portfolio](https://juri-halveth.github.io/)
-
-
-**Öffnen. Suchen. Lernen.**
-
-[Mein Lernportal](https://juri-halveth.github.io/mein-lernportal/) ist ein statisches, frei zugängliches Lernuniversum mit 702 Lektionen in 13 Themenwelten. Die Startseite öffnet direkt den Katalog. Es gibt keine Anmeldung, Paywall, Werbung oder eingebautes Tracking.
+[Starship Lab als optionaler HALVETH-Überblick](https://juri-halveth.github.io/universum/)
 
 ## Was enthalten ist
 

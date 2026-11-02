@@ -1,10 +1,12 @@
 [Original / Deutsch](README.md) · [English](README.en.md) · [Русский](README.ru.md)
 
-# Mein Lernportal – 702 lessons to get started
+# Mein Lernportal · 702 lessons to get started
 
 **Concise project guide · EN / RU**
 
-A freely accessible static learning portal with 702 lessons across 13 subject worlds in the audited source edition. The catalogue includes quizzes, coding exercises, visualizations, search and browser-local progress with export and import.
+A freely accessible static learning portal with 702 lessons across 13 subject worlds in the audited source edition. Quizzes, coding exercises, visualizations, search and browser-local progress are available without a required account.
+
+[**Open the lessons directly**](https://juri-halveth.github.io/mein-lernportal/) · [Original technical documentation](README.md) · [Source code](https://github.com/Juri-Halveth/mein-lernportal/tree/main)
 
 Bash Big Bang connects practical Git Bash learning to the wider subject collection. Lernstudio is a related but separately maintained platform. The original README and notices define the content, source references and applicable rights.
 
@@ -14,7 +16,6 @@ This manually edited guide summarizes the audited source. The original technical
 
 - [Original technical documentation](README.md)
 - [README at the audited commit](https://github.com/Juri-Halveth/mein-lernportal/blob/45f85aede73976937a799ae48664740bd28aeacf/README.md)
-- [Open the learning portal](https://juri-halveth.github.io/mein-lernportal/)
 - [Bash Big Bang](https://juri-halveth.github.io/mein-lernportal/big-bang/)
 
 ## Rights and scope
